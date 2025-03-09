@@ -1,7 +1,7 @@
 # AWZ: Форма авторизации (awz.autform)
 
-### [Установка модуля](https://github.com/zahalski/awz.autform/tree/main/docs/install.md)
-### [Настройка модуля](https://github.com/zahalski/awz.autform/tree/main/docs/settings.md)
+### [Установка модуля](https://github.com/azahalski/awz.autform/tree/main/docs/install.md)
+### [Настройка модуля](https://github.com/azahalski/awz.autform/tree/main/docs/settings.md)
 
 <!-- desc-start -->
 
@@ -29,6 +29,6 @@
 <!-- cl-start -->
 ## История версий
 
-https://github.com/zahalski/awz.autform/blob/master/CHANGELOG.md
+https://github.com/azahalski/awz.autform/blob/master/CHANGELOG.md
 
 <!-- cl-end -->

@@ -68,9 +68,9 @@ class handlersAutForm {
 Необходимо наличие опции включения/отключения данного обработчика в настройках ваших модулей.
 
 **Пример 1**<br> (Awz\AutForm\HandleSms::OnAfterAddEvent):
-[ссылка](https://github.com/zahalski/awz.autform/blob/main/bitrix/modules/awz.autform/lib/handlesms/aut.php)
+[ссылка](https://github.com/azahalski/awz.autform/blob/main/bitrix/modules/awz.autform/lib/handlesms/aut.php)
 
 **Пример 2**<br> (Awz\AutForm\Handlers::onSendSmsCode):
-[ссылка](https://github.com/zahalski/awz.autform/blob/main/bitrix/modules/awz.autform/lib/handlers.php)
+[ссылка](https://github.com/azahalski/awz.autform/blob/main/bitrix/modules/awz.autform/lib/handlers.php)
 
 <!-- settany-end -->

@@ -98,6 +98,6 @@
 
 <!-- settings-end -->
 
-### 4.1 [Настройка смс через модуль mlife.smsservices](https://github.com/zahalski/awz.autform/tree/main/docs/settsms.md)
-### 4.2 [Настройка звонков через модуль awz.flashcallapi](https://github.com/zahalski/awz.autform/tree/main/docs/settcall.md)
-### 4.3 [Настройка через свой шлюз или модуль](https://github.com/zahalski/awz.autform/tree/main/docs/settany.md)
+### 4.1 [Настройка смс через модуль mlife.smsservices](https://github.com/azahalski/awz.autform/tree/main/docs/settsms.md)
+### 4.2 [Настройка звонков через модуль awz.flashcallapi](https://github.com/azahalski/awz.autform/tree/main/docs/settcall.md)
+### 4.3 [Настройка через свой шлюз или модуль](https://github.com/azahalski/awz.autform/tree/main/docs/settany.md)
