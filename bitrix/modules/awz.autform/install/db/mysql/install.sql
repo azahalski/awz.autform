@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `b_awz_autform_codes` (
 CREATE TABLE IF NOT EXISTS `b_awz_autform_logs` (
     ID int(18) NOT NULL AUTO_INCREMENT,
     PHONE varchar(255) NOT NULL,
-    CREATE_DATE datetime NOT NULL
+    CREATE_DATE datetime NOT NULL,
     PRM longtext,
     PRIMARY KEY (`ID`)
 );
