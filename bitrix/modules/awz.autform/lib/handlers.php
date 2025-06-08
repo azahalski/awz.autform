@@ -10,6 +10,8 @@ use Bitrix\Main\Loader;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Result;
 use Mlife\Smsservices\Sender;
+use Bitrix\Main\Service\GeoIp\Manager;
+use Bitrix\Main\Web\Json;
 
 Loc::loadMessages(__FILE__);
 

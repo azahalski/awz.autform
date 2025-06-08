@@ -1,8 +1,8 @@
 <?php
-use \Bitrix\Main\Localization\Loc,
-    \Bitrix\Main\EventManager,
-    \Bitrix\Main\ModuleManager,
-    \Bitrix\Main\Application;
+use Bitrix\Main\Localization\Loc,
+    Bitrix\Main\EventManager,
+    Bitrix\Main\ModuleManager,
+    Bitrix\Main\Application;
 
 Loc::loadMessages(__FILE__);
 
@@ -13,16 +13,17 @@ class awz_autform extends CModule {
     var $MODULE_VERSION_DATE;
     var $MODULE_NAME;
     var $MODULE_DESCRIPTION;
-    var $MODULE_CSS;
-    var $MODULE_GROUP_RIGHTS = "Y";
 
     var $errors = false;
 
     public function __construct()
     {
         $arModuleVersion = array();
-
         include(__DIR__.'/version.php');
+
+        $dirs = explode('/',dirname(__DIR__ . '../'));
+        $this->MODULE_ID = array_pop($dirs);
+        unset($dirs);
 
         $this->MODULE_VERSION = $arModuleVersion["VERSION"];
         $this->MODULE_VERSION_DATE = $arModuleVersion["VERSION_DATE"];
@@ -30,96 +31,7 @@ class awz_autform extends CModule {
         $this->MODULE_NAME = Loc::getMessage("AWZ_AUTFORM_MODULE_NAME");
         $this->MODULE_DESCRIPTION = Loc::getMessage("AWZ_AUTFORM_MODULE_DESCRIPTION");
         $this->PARTNER_NAME = Loc::getMessage("AWZ_PARTNER_NAME");
-        $this->PARTNER_URI = Loc::getMessage("AWZ_PARTNER_URI");
-    }
-
-    function InstallDB()
-    {
-        global $DB, $DBType, $APPLICATION;
-        $this->errors = false;
-        $this->errors = $DB->RunSQLBatch($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/". $this->MODULE_ID ."/install/db/".mb_strtolower($DB->type)."/install.sql");
-        if (!$this->errors) {
-            return true;
-        } else {
-            $APPLICATION->ThrowException(implode("", $this->errors));
-            return $this->errors;
-        }
-        return true;
-    }
-
-
-    function UnInstallDB()
-    {
-        global $DB, $DBType, $APPLICATION;
-
-        $this->errors = false;
-        $this->errors = $DB->RunSQLBatch($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/". $this->MODULE_ID ."/install/db/".mb_strtolower($DB->type)."/uninstall.sql");
-        if (!$this->errors) {
-            return true;
-        }
-        else {
-            $APPLICATION->ThrowException(implode("", $this->errors));
-            return $this->errors;
-        }
-    }
-
-
-    function InstallEvents()
-    {
-        $eventManager = EventManager::getInstance();
-        $eventManager->registerEventHandler(
-            'mlife.smsservices', 'OnAfterEventsAdd',
-            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onAfterEventsAdd'
-        );
-        $eventManager->registerEventHandler(
-            $this->MODULE_ID, 'checkPhone',
-            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'checkPhone'
-        );
-        $eventManager->registerEventHandler(
-            $this->MODULE_ID, 'onSendSmsCode',
-            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onSendSmsCode'
-        );
-        $eventManager->registerEventHandler(
-            $this->MODULE_ID, 'onCheckCode',
-            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onCheckCode'
-        );
-
-        return true;
-    }
-
-    function UnInstallEvents()
-    {
-        $eventManager = EventManager::getInstance();
-        $eventManager->unRegisterEventHandler(
-            'mlife.smsservices', 'OnAfterEventsAdd',
-            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onAfterEventsAdd'
-        );
-        $eventManager->unRegisterEventHandler(
-            $this->MODULE_ID, 'checkPhone',
-            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'checkPhone'
-        );
-        $eventManager->unRegisterEventHandler(
-            $this->MODULE_ID, 'onSendSmsCode',
-            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onSendSmsCode'
-        );
-        $eventManager->unRegisterEventHandler(
-            $this->MODULE_ID, 'onCheckCode',
-            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onCheckCode'
-        );
-
-        return true;
-    }
-
-    function InstallFiles()
-    {
-        CopyDirFiles($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/".$this->MODULE_ID."/install/components/awz/autform/", $_SERVER['DOCUMENT_ROOT']."/bitrix/components/awz/autform", true, true);
-        return true;
-    }
-
-    function UnInstallFiles()
-    {
-        DeleteDirFilesEx("/bitrix/components/awz/autform");
-        return true;
+        $this->PARTNER_URI = "https://zahalski.dev/";
     }
 
     function DoInstall()
@@ -128,11 +40,16 @@ class awz_autform extends CModule {
 
         $this->InstallFiles();
         $this->InstallDB();
-		$this->checkOldInstallTables();
+        $this->checkOldInstallTables();
         $this->InstallEvents();
         $this->createAgents();
 
         ModuleManager::RegisterModule($this->MODULE_ID);
+
+        $filePath = dirname(__DIR__ . '/../../options.php');
+        if(file_exists($filePath)){
+            LocalRedirect('/bitrix/admin/settings.php?lang='.LANG.'&mid='.$this->MODULE_ID.'&mid_menu=1');
+        }
 
         return true;
     }
@@ -159,6 +76,111 @@ class awz_autform extends CModule {
             return true;
         }
     }
+
+    function InstallDB()
+    {
+        global $DB, $DBType, $APPLICATION;
+        $connection = \Bitrix\Main\Application::getConnection();
+        $this->errors = false;
+        if(!$this->errors && !$DB->TableExists(implode('_', explode('.',$this->MODULE_ID)).'_codes')) {
+            $this->errors = $DB->RunSQLBatch($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/" . $this->MODULE_ID . "/install/db/".$connection->getType()."/install.sql");
+        }
+        if (!$this->errors) {
+            return true;
+        } else {
+            $APPLICATION->ThrowException(implode("", $this->errors));
+            return $this->errors;
+        }
+    }
+
+
+    function UnInstallDB()
+    {
+        global $DB, $DBType, $APPLICATION;
+        $connection = \Bitrix\Main\Application::getConnection();
+        $this->errors = false;
+        if (!$this->errors) {
+            $this->errors = $DB->RunSQLBatch($_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/" . $this->MODULE_ID . "/install/db/" . $connection->getType() . "/uninstall.sql");
+        }
+        if (!$this->errors) {
+            return true;
+        }
+        else {
+            $APPLICATION->ThrowException(implode("", $this->errors));
+            return $this->errors;
+        }
+    }
+
+
+    function InstallEvents()
+    {
+        $eventManager = EventManager::getInstance();
+        $eventManager->registerEventHandler(
+            'mlife.smsservices', 'OnAfterEventsAdd',
+            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onAfterEventsAdd'
+        );
+        $eventManager->registerEventHandler(
+            'main', 'OnGetCurrentSiteTemplate',
+            $this->MODULE_ID, '\Awz\AutForm\HandlersV2', 'OnGetCurrentSiteTemplate'
+        );
+        $eventManager->registerEventHandler(
+            $this->MODULE_ID, 'checkPhone',
+            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'checkPhone'
+        );
+        $eventManager->registerEventHandler(
+            $this->MODULE_ID, 'onSendSmsCode',
+            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onSendSmsCode'
+        );
+        $eventManager->registerEventHandler(
+            $this->MODULE_ID, 'onCheckCode',
+            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onCheckCode'
+        );
+
+        return true;
+    }
+
+    function UnInstallEvents()
+    {
+        $eventManager = EventManager::getInstance();
+        $eventManager->unRegisterEventHandler(
+            'mlife.smsservices', 'OnAfterEventsAdd',
+            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onAfterEventsAdd'
+        );
+        $eventManager->unRegisterEventHandler(
+            'main', 'OnGetCurrentSiteTemplate',
+            $this->MODULE_ID, '\Awz\AutForm\HandlersV2', 'OnGetCurrentSiteTemplate'
+        );
+        $eventManager->unRegisterEventHandler(
+            $this->MODULE_ID, 'checkPhone',
+            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'checkPhone'
+        );
+        $eventManager->unRegisterEventHandler(
+            $this->MODULE_ID, 'onSendSmsCode',
+            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onSendSmsCode'
+        );
+        $eventManager->unRegisterEventHandler(
+            $this->MODULE_ID, 'onCheckCode',
+            $this->MODULE_ID, '\Awz\AutForm\Handlers', 'onCheckCode'
+        );
+
+        return true;
+    }
+
+    function InstallFiles()
+    {
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/".$this->MODULE_ID."/install/components/awz/autform/", $_SERVER['DOCUMENT_ROOT']."/bitrix/components/awz/autform", true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/".$this->MODULE_ID."/install/components/awz/autform2/", $_SERVER['DOCUMENT_ROOT']."/bitrix/components/awz/autform", true, true);
+        return true;
+    }
+
+    function UnInstallFiles()
+    {
+        DeleteDirFilesEx("/bitrix/components/awz/autform");
+        DeleteDirFilesEx("/bitrix/components/awz/autform2");
+        return true;
+    }
+
+
 
     function createAgents() {
 

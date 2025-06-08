@@ -15,3 +15,13 @@ $MESS["AWZ_AUTFORM_OPT_SEND_CODE_TITLE"] = "Отправка кодов";
 $MESS["AWZ_AUTFORM_OPT_DEF_LIMIT_DAY"] = "Количество кодов за сутки";
 $MESS["AWZ_AUTFORM_OPT_DEF_LIMIT_H"] = "Количество кодов за час";
 $MESS["AWZ_AUTFORM_OPT_CHECK_MODULE_NAME"] = "Модуль не установлен";
+
+$MESS["AWZ_AUTFORM_OPT_CHECK_ERR1"] = "Ошибка. <br>Для настройки действий, установите модуль awz.admin.<br>";
+$MESS["AWZ_AUTFORM_OPT_CHECK_ERR2"] = "Ссылки на модуль awz.admin";
+$MESS["AWZ_AUTFORM_OPT_CHECK_ERR3"] = "маркетплейс 1с-Битрикс";
+
+$MESS["AWZ_AUTFORM_OPT_ACTION1"] = "Действия входа по Email";
+$MESS["AWZ_AUTFORM_OPT_ACTION2"] = "Действия входа по Телефону";
+
+$MESS["AWZ_AUTFORM_EVENT_TYPE_NAME"] = "Отправка кода на Email";
+$MESS["AWZ_AUTFORM_EVENT_TYPE_DESC"] = "#AWZ_CODE# - код подтверждения\n#AWZ_EMAIL# - email пользователя";

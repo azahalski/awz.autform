@@ -25,7 +25,7 @@ class Aut implements SmsForm {
     {
         if(!$value) serialize(array());
 
-        $data = unserialize($value);
+        $data = unserialize($value, ["allowed_classes" => false]);
 
         $MCR_EXT = Loc::getMessage('AWZ_AUTFORM_HANDLESMS_DEFAULT_MACROS').'<br><br>';
         $fields = UserTable::getMap();
@@ -120,7 +120,7 @@ class Aut implements SmsForm {
         $findTemplate = false;
         $smsSending = false;
         while($arData = $res->fetch()) {
-            $arData['PARAMS'] = unserialize($arData['PARAMS']);
+            $arData['PARAMS'] = unserialize($arData['PARAMS'], ["allowed_classes" => false]);
             $findTemplate = true;
 
             if($arData['PARAMS']['PHONE']){

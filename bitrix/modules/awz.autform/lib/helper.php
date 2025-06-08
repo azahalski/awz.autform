@@ -107,7 +107,7 @@ class Helper {
                     $cnt = CodesTable::getCount($filter);
                     $optionValue = (int)Option::get('awz.autform',$code.'_LIMIT_'.$code2, "", "");
                     if($cnt >= $optionValue){
-                        $result->addError(new Error(Loc::getMessage('AWZ_AUTFORM_HELPER_ERR_LIMIT', array('#CODE#'=>$code.$code2))));
+                        $result->addError(new Error(Loc::getMessage('AWZ_AUTFORM_HELPER_ERR_LIMIT', array('#CODE#'=>$code2))));
                         break 2;
                     }
                 }
