@@ -17,6 +17,7 @@ use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\Service\GeoIp\Manager;
 
 Loc::loadMessages(__FILE__);
+Loc::loadMessages(__DIR__.'/../../mlife.smsservices/options.php');
 
 class HandlersV2 {
 
@@ -191,7 +192,7 @@ class HandlersV2 {
 
         if($rule['controlId']=='actionSendSmsCode' && Loader::includeModule('mlife.smsservices'))
         {
-            $phone = '+'.$event->getParameter('param');
+            $phone = '+'.preg_replace('/([^0-9])/is','',$event->getParameter('param'));
 
             $code = Random::getStringByCharsets(static::CODE_LEN_PHONE, '123456789');
             $siteId = Application::getInstance()->getContext()->getSite();
@@ -281,6 +282,65 @@ class HandlersV2 {
                         'message'=>Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_SEND_CODE_EMAIL'),
                         'button'=>Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_SEND_CODE_BTN_EMAIL'),
                     ]);
+                    $event->setParameter('result', $result);
+                }
+            }
+        }
+        elseif($rule['controlId'] == 'actionSendTransportSmsCode')
+        {
+            $phone = '+'.preg_replace('/([^0-9])/is','',$event->getParameter('param'));
+
+            $code = Random::getStringByCharsets(static::CODE_LEN_PHONE, '123456789');
+            $siteId = Application::getInstance()->getContext()->getSite();
+
+            if(!$rule['site_id'] || ($rule['site_id']=='-') || ($rule['site_id'] == $siteId)){
+                $smsOb = new \Mlife\Smsservices\Sender();
+                $checkPhone = $smsOb->checkPhoneNumber($phone);
+                if($checkPhone['check']){
+
+                    $classname = "\\Mlife\\Smsservices\\Transport\\".str_replace('.php','',$rule['transport_id']);
+
+                    if(Loader::includeModule('mlife.smsservices') && class_exists($classname)){
+                        $paramsAr = array(
+                            'login' => $rule['transport_login'],
+                            'passw' => $rule['transport_psw'],
+                            'sender' => $rule['transport_sender'],
+                            'charset' => 'utf-8',
+                        );
+                        $transport = new $classname($paramsAr);
+                        try{
+                            $send = $transport->_sendSms($phone, str_replace('#CODE#',$code,$rule['message']));
+                        }
+                        catch(\Exception $ex){
+                            $send = new \stdClass();
+                            $send->error = 'Transport class error';
+                            $send->error_code = '9998';
+                        }
+                        if(!$send->error){
+                            $result = new Result();
+                            $result->setData([
+                                'code'=>$code,
+                                'nextCode'=>time()+(int)$rule['timeout_code'],
+                                'message'=>$rule['code_desc'] ?? Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_SEND_CODE'),
+                                'button'=>Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_SEND_CODE_BTN'),
+                            ]);
+                            $event->setParameter('result', $result);
+                        }else{
+                            $result = new Result();
+                            $event->setParameter('result', $result);
+                            \CEventLog::Add(array(
+                                    'SEVERITY' => 'ERROR',
+                                    'AUDIT_TYPE_ID' => 'SMSSEND',
+                                    'MODULE_ID' => Events::MODULE_ID,
+                                    'DESCRIPTION' => $send->error_code.': '.$send->error
+                                )
+                            );
+                        }
+                    }
+
+                }else{
+                    $result = new Result();
+                    $result->addError(new Error(Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_PHONE_ERR'),'phone'));
                     $event->setParameter('result', $result);
                 }
             }
@@ -416,6 +476,7 @@ class HandlersV2 {
                                     }
                                 }
                             }
+                            continue;
                         }
                         break 2;
                     }
@@ -504,6 +565,103 @@ class HandlersV2 {
                     '.'
                 ]
             ];
+
+            $transportValues = [];
+            $smslist = glob($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/mlife.smsservices/lib/transport/*.php");
+            foreach ($smslist as $value) {
+                $name = str_replace($_SERVER["DOCUMENT_ROOT"].'/bitrix/modules/mlife.smsservices/lib/transport/','',$value);
+                $transportValues[$name] = ((Loc::getMessage("SERVIS_".strtoupper(str_replace('.php','',$name)))) ? Loc::getMessage("SERVIS_".strtoupper(str_replace('.php','',$name))) : str_replace('.php','',$name));
+            }
+
+            $rules[] = [
+                'controlId' => 'actionSendTransportSmsCode',
+                'group'=>true,
+                'label'=>"Отправить код через шлюз",
+                'defaultText'=>"Отправить код через шлюз",
+                'showIn'=>['CondGroupSms'],
+                'visual'=>[
+                ],
+                'control'=>[
+                    'Отправить код через шлюз',
+                    [
+                        'type'=>'select',
+                        'id'=>'transport_id',
+                        'name'=>'transport_id',
+                        'values'=>$transportValues,
+                        'defaultValue'=>''
+                    ],
+                    ' логин: ',
+                    [
+                        'type'=>'input',
+                        'id'=>'transport_login',
+                        'name'=>'transport_login',
+                        'defaultValue'=>''
+                    ],
+                    ' пароль: ',
+                    [
+                        'type'=>'input',
+                        'id'=>'transport_psw',
+                        'name'=>'transport_psw',
+                        'defaultValue'=>''
+                    ],
+                    ' отправитель: ',
+                    [
+                        'type'=>'input',
+                        'id'=>'transport_sender',
+                        'name'=>'transport_sender',
+                        'defaultValue'=>''
+                    ],
+                    Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_RULE_MS_SITE'),
+                    [
+                        'type'=>'select',
+                        'id'=>'site_id',
+                        'name'=>'site_id',
+                        'values'=>$siteValues,
+                        'defaultValue'=>'-'
+                    ],
+                    '.',
+                    Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_RULE_MS_TMPL'),
+                    [
+                        'type'=>'input',
+                        'id'=>'message',
+                        'name'=>'message',
+                        'defaultValue'=>''
+                    ],
+                    '(код - #CODE#).',
+                    Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_RULE_MS_TIMEOUT'),
+                    [
+                        'type'=>'input',
+                        'id'=>'timeout_code',
+                        'name'=>'timeout_code',
+                        'defaultValue'=>'60'
+                    ],
+                    Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_RULE_MS_SEC').'.',
+                    Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_RULE_MS_REPEAT'),
+                    [
+                        'type'=>'input',
+                        'id'=>'right_cnt',
+                        'name'=>'right_cnt',
+                        'defaultValue'=>'1000'
+                    ],
+                    Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_RULE_MS_RAZ').'. ',
+                    Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_RULE_MS_KOD').': ',
+                    [
+                        'type'=>'input',
+                        'id'=>'right_code',
+                        'name'=>'right_code',
+                        'defaultValue'=>'-'
+                    ],
+                    '.',
+                    'Текст для поля кода: ',
+                    [
+                        'type'=>'input',
+                        'id'=>'code_desc',
+                        'name'=>'code_desc',
+                        'defaultValue'=>'Код подтверждения отправлен, введите его в поле ниже'
+                    ]
+                ]
+            ];
+
         }
 
         $event->setParameter('rules', $rules);

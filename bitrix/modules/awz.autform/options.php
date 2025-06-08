@@ -56,7 +56,7 @@ if(Loader::includeModule('awz.admin')) {
         ],
     ];
     CJSCore::RegisterExt('awz_core_condtree', $arTreeDescr);
-    CJSCore::Init(['awz_core_condtree']);
+    CJSCore::Init(['awz_core_condtree','jquery3']);
 }
 $actionRules = [];
 $actionRules[] = [
@@ -331,9 +331,68 @@ $tabControl->BeginNextTab();
             }else{
                 $params[0] = $actionValues;
             }
+
+            if($_REQUEST['type']=='condRulesEmail'){
+                $paramsNew = [];
+                $keyAr = explode('__', $_REQUEST['down']);
+                $key = end($keyAr);
+                $next = false;
+                foreach($params[0]['children'] as $keyReal=>$row){
+                    if($keyReal==$key){
+                        $next = $row;
+                        continue;
+                    }
+                    $paramsNew[] = $row;
+                    if($next!==false){
+                        $paramsNew[] = $next;
+                        $next = false;
+                    }
+                }
+                if($next){
+                    $paramsNew[] = $next;
+                }
+                $finJson = [
+                    ['controlId'=>$params[0]['controlId'], 'aggregator'=>'AND']
+                ];
+                foreach($paramsNew as $k=>$v){
+                    $finJson['0__'.$k] = $v['values'];
+                }
+                Option::set($module_id, "RULES_EMAIL", Json::encode($finJson), "");
+                LocalRedirect($APPLICATION->GetCurPage().'?mid='.htmlspecialcharsbx($module_id).'&lang=LANGUAGE_ID&mid_menu=1');
+            }
+
             ?>
+            <style>
+                .condition-wrapper .condition-container .num {
+                    position:absolute;top:-5px;left:10px;width:36px;height:36px;
+                    line-height:36px;
+                    border-radius:50%;
+                    text-align:center;
+                    background:#113c7d;color:#ffffff;
+                }
+                .condition-wrapper .condition-container .up {
+                    position:absolute;top:28px;left:0;width:56px;text-align:center;cursor: pointer;
+                    text-decoration:underline;
+                    border-bottom:0;
+                }
+                .condition-wrapper .condition-container .up:hover {cursor: pointer;}
+                .condition-logic.condition-logic-and {display:none;}
+                #condRulesEmail .condition-border {padding: 10px 8px 5px 10px!important;}
+            </style>
             <div id="condRulesEmail"></div>
             <script>
+                /*$(document).on('click','.condition-wrapper .condition-container .up', function(){
+                    var cur_item = $(this).closest('.condition-wrapper');
+                    var el = cur_item.prev();
+                    if(!el.length) return false;
+                    if(!el.hasClass('condition-wrapper')) return false;
+                    var copy_from = cur_item.clone(true);
+                    $(el).replaceWith(copy_from);
+
+                    var copy_to = $(el).clone(true);
+                    cur_item.replaceWith(copy_to);
+
+                });*/
                 BX.ready(function(){
                     let condRulesEmail = <?=\Bitrix\Main\Web\Json::encode($actionRules)?>;
                     let condValuesEmail = <?=\Bitrix\Main\Web\Json::encode($params[0])?>;
@@ -345,6 +404,17 @@ $tabControl->BeginNextTab();
                             'sepID': '__',
                             'prefix': 'email'
                         },condValuesEmail,condRulesEmail);
+
+                        setTimeout(function(){
+                            var cn_rule = 0;
+                            $('#condRulesEmail .condition-wrapper .condition-container').each(function(){
+                                cn_rule+=1;
+                                $(this).append('<a class="up" href="<?echo $APPLICATION->GetCurPage()?>?mid=<?=htmlspecialcharsbx($module_id)?>&lang=<?=LANGUAGE_ID?>&mid_menu=1&type=condRulesEmail&down=">ниже</a>');
+                                $(this).find('a.up').attr('href', $(this).find('a.up').attr('href')+$(this).attr('id'))
+                                $(this).append('<span class="num">'+cn_rule+'</span>');
+                            });
+                        },0);
+
                     }
                     initValues();
                 });
@@ -401,7 +471,40 @@ $tabControl->BeginNextTab();
             }else{
                 $params[0] = $actionValues;
             }
+
+            if($_REQUEST['type']=='condRulesSms'){
+                $paramsNew = [];
+                $keyAr = explode('__', $_REQUEST['down']);
+                $key = end($keyAr);
+                $next = false;
+                foreach($params[0]['children'] as $keyReal=>$row){
+                    if($keyReal==$key){
+                        $next = $row;
+                        continue;
+                    }
+                    $paramsNew[] = $row;
+                    if($next!==false){
+                        $paramsNew[] = $next;
+                        $next = false;
+                    }
+                }
+                if($next){
+                    $paramsNew[] = $next;
+                }
+                $finJson = [
+                    ['controlId'=>$params[0]['controlId'], 'aggregator'=>'AND']
+                ];
+                foreach($paramsNew as $k=>$v){
+                    $finJson['0__'.$k] = $v['values'];
+                }
+                Option::set($module_id, "RULES_SMS", Json::encode($finJson), "");
+                LocalRedirect($APPLICATION->GetCurPage().'?mid='.htmlspecialcharsbx($module_id).'&lang=LANGUAGE_ID&mid_menu=1');
+            }
+
             ?>
+            <style>
+                #condRulesSms .condition-border {padding: 10px 8px 5px 10px!important;}
+            </style>
             <div id="condRulesSms"></div>
             <script>
                 BX.ready(function(){
@@ -415,6 +518,15 @@ $tabControl->BeginNextTab();
                             'sepID': '__',
                             'prefix': 'sms'
                         },condValuesSms,condRulesSms);
+                        setTimeout(function(){
+                            var cn_rule = 0;
+                            $('#condRulesSms .condition-wrapper .condition-container').each(function(){
+                                cn_rule+=1;
+                                $(this).append('<a class="up" href="<?echo $APPLICATION->GetCurPage()?>?mid=<?=htmlspecialcharsbx($module_id)?>&lang=<?=LANGUAGE_ID?>&mid_menu=1&type=condRulesSms&down=">ниже</a>');
+                                $(this).find('a.up').attr('href', $(this).find('a.up').attr('href')+$(this).attr('id'))
+                                $(this).append('<span class="num">'+cn_rule+'</span>');
+                            });
+                        },0);
                     }
                     initValues();
                 });
