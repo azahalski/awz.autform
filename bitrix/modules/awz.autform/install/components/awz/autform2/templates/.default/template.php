@@ -56,7 +56,7 @@ $options = array(
     <?if(\Bitrix\Main\Engine\CurrentUser::get()?->getId()){?>
         <a href="<?=$arParams['PERSONAL_LINK']?>"><?=Loc::getMessage('AWZ_AUTFORM2_TMPL_PERSONAL_LINK')?></a>
     <?}else{?>
-        <a class="awz-autform2-aut-link" data-mode="" id="<?=$autFormId?>_lnk" href="#"><?=Loc::getMessage('AWZ_AUTFORM2_TMPL_LINK')?></a>
+        <?if(false){?><a class="awz-autform2-aut-link" data-mode="" id="<?=$autFormId?>_lnk" href="#"><?=Loc::getMessage('AWZ_AUTFORM2_TMPL_LINK')?></a><?}?>
         <div id="<?=$options['loadFormNodeId']?>"></div>
     <?}?>
     <?
