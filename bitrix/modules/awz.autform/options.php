@@ -232,6 +232,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $MODULE_RIGHT == "W" && strlen($_REQ
     if(!empty($newValue))
         Option::set($module_id, "RULES_SMS", Json::encode($newValue));
 
+    Option::set($module_id, "ZHURNAL_1", trim($_REQUEST["ZHURNAL_1"]));
+    Option::set($module_id, "ZHURNAL_2", trim($_REQUEST["ZHURNAL_2"]));
+    Option::set($module_id, "ZHURNAL_3", trim($_REQUEST["ZHURNAL_3"]));
+    Option::set($module_id, "ZHURNAL_SROCK", preg_replace('/([^0-9])/is','',$_REQUEST["ZHURNAL_SROCK"]));
+
     Option::set($module_id, "CHECK_PHONE_MLIFE", trim($_REQUEST["CHECK_PHONE_MLIFE"]));
     Option::set($module_id, "SEND_SMS_MLIFE", trim($_REQUEST["SEND_SMS_MLIFE"]));
     Option::set($module_id, "SEND_SMS_AWZ_FLASH", trim($_REQUEST["SEND_SMS_AWZ_FLASH"]));
@@ -561,6 +566,38 @@ else{
         <td colspan="2" style="text-align:center;"><?=Loc::getMessage('AWZ_AUTFORM_OPT_CHECK_MODULE_NAME')?></td>
     </tr>
 <?}?>
+
+<tr class="heading">
+    <td colspan="2" style="text-align:center;"><?=Loc::getMessage('AWZ_AUTFORM_OPT_ZHURNAL')?></td>
+</tr>
+    <tr>
+    <td colspan="2" style="text-align:center;"><?=Loc::getMessage('AWZ_AUTFORM_OPT_ZHURNAL_DESC')?></td>
+</tr>
+<tr>
+    <td><?=Loc::getMessage('AWZ_AUTFORM_OPT_ZHURNAL_1')?></td>
+    <td>
+        <?$val = Option::get($module_id, "ZHURNAL_1", "N","");?>
+        <input type="checkbox" value="Y" name="ZHURNAL_1" <?if ($val=="Y") echo "checked";?>></td>
+</tr>
+<tr>
+    <td><?=Loc::getMessage('AWZ_AUTFORM_OPT_ZHURNAL_2')?></td>
+    <td>
+        <?$val = Option::get($module_id, "ZHURNAL_2", "N","");?>
+        <input type="checkbox" value="Y" name="ZHURNAL_2" <?if ($val=="Y") echo "checked";?>></td>
+</tr>
+<tr>
+    <td><?=Loc::getMessage('AWZ_AUTFORM_OPT_ZHURNAL_3')?></td>
+    <td>
+        <?$val = Option::get($module_id, "ZHURNAL_3", "N","");?>
+        <input type="checkbox" value="Y" name="ZHURNAL_3" <?if ($val=="Y") echo "checked";?>></td>
+</tr>
+<tr>
+    <td><?=Loc::getMessage('AWZ_AUTFORM_OPT_ZHURNAL_SROCK')?></td>
+    <td>
+        <?$val = Option::get($module_id, "ZHURNAL_SROCK", "0", "");?>
+        <input type="text" size="35" maxlength="255" value="<?=$val?>" name="ZHURNAL_SROCK"/>
+    </td>
+</tr>
 <?
 $tabControl->BeginNextTab();
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/admin/group_rights.php");

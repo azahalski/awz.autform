@@ -505,8 +505,8 @@ class AwzAutFormComponent extends CBitrixComponent implements Controllerable, Er
                 "PERSONAL_MOBILE"=>$phone
             );
 
-            $emailRequired = Option::get('main', 'new_user_email_required') === 'Y' ? true : false;
-            if($emailRequired){
+            $emailRequired = Option::get('main', 'new_user_email_required') === 'Y' ? 'Y' : 'N';
+            if($emailRequired == 'Y'){
                 $arFieldsUser['EMAIL'] = time().Random::getString(5).'@noemail.gav';
             }
 
@@ -884,7 +884,7 @@ class AwzAutFormComponent extends CBitrixComponent implements Controllerable, Er
             return false;
         }
 
-		$main_query = new Query(UserTable::getEntity());
+        $main_query = new Query(UserTable::getEntity());
         if(method_exists($main_query, 'enablePrivateFields')){
             $main_query->enablePrivateFields();
         }

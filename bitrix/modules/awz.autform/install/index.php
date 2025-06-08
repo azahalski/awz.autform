@@ -189,6 +189,11 @@ class awz_autform extends CModule {
             $this->MODULE_ID,
             "N",
             86400);
+        CAgent::AddAgent(
+            "\\Awz\\AutForm\\LogTable::clearOld();",
+            $this->MODULE_ID,
+            "N",
+            86400);
 
         return true;
     }
@@ -196,6 +201,7 @@ class awz_autform extends CModule {
     function deleteAgents() {
 
         CAgent::RemoveAgent("\\Awz\\AutForm\\Agents::agentDeleteOldCodes();", $this->MODULE_ID);
+        CAgent::RemoveAgent("\\Awz\\AutForm\\LogTable::clearOld();", $this->MODULE_ID);
 
         return true;
     }

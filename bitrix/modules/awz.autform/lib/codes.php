@@ -65,7 +65,20 @@ class CodesTable extends Entity\DataManager
             ),
             new Entity\StringField('PRM', array(
                     'required' => false,
-                    'serialized'=>true,
+                    'save_data_modification' => function(){
+                        return [
+                            function ($value) {
+                                return serialize($value);
+                            }
+                        ];
+                    },
+                    'fetch_data_modification' => function(){
+                        return [
+                            function ($value) {
+                                return unserialize($value, ["allowed_classes" => false]);
+                            }
+                        ];
+                    },
                     'title'=>Loc::getMessage('AWZ_AUTFORM_CODES_FIELDS_PRM')
                 )
             ),

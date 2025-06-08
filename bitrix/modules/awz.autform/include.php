@@ -4,6 +4,7 @@ use Bitrix\Main\Event;
 use Bitrix\Main\EventManager;
 use Awz\AutForm\Events;
 use Bitrix\Main\EventResult;
+use Bitrix\Main\Config\Option;
 
 $eventManager = EventManager::getInstance();
 
@@ -35,3 +36,17 @@ $eventManager->addEventHandler(
     'awz.autform', 'buildRules',
     ["\\Awz\\AutForm\\HandlersV2", "buildRules"]
 );
+
+$eventManager->addEventHandler(
+    'awz.autform', 'onGenerateCode',
+    ["\\Awz\\AutForm\\LogTable", "onGenerateCode"]
+);
+$eventManager->addEventHandler(
+    'awz.autform', 'onAfterAuthSms',
+    ["\\Awz\\AutForm\\LogTable", "onAfterAuthSms"]
+);
+$eventManager->addEventHandler(
+    'awz.autform', 'onAfterAuthPsw',
+    ["\\Awz\\AutForm\\LogTable", "onAfterAuthPsw"]
+);
+
