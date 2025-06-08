@@ -189,8 +189,13 @@ class HandlersV2 {
     public static function checkRule(Event $event){
 
         $rule = $event->getParameter('rule');
+        $isResult = $event->getParameter('result');
 
-        if($rule['controlId']=='actionSendSmsCode' && Loader::includeModule('mlife.smsservices'))
+
+        if($isResult instanceof \Bitrix\Main\Result){
+            //уже отработало на обработчиках выше
+        }
+        elseif($rule['controlId']=='actionSendSmsCode' && Loader::includeModule('mlife.smsservices'))
         {
             $phone = '+'.preg_replace('/([^0-9])/is','',$event->getParameter('param'));
 
