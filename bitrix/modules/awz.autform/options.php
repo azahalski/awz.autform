@@ -75,13 +75,13 @@ $actionRules[] = [
         ]
     ],
     'control'=>[
-        "Выполнить ",
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_RUN')." ",
         [
             'id'=>'fLevel',
             'name'=>'aggregator',
             'type'=>'select',
             'values'=>[
-                'AND'=>'действия по порядку'
+                'AND'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_NAME1')
             ],
             'defaultText'=>'...',
             'defaultValue'=>'AND'
@@ -91,14 +91,14 @@ $actionRules[] = [
 $actionRules[] = [
     'controlId' => 'actionSendCode',
     'group'=>true,
-    'label'=>'Отправить код на Email',
-    'defaultText'=>'Отправить код на Email',
+    'label'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_NAME2'),
+    'defaultText'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_NAME2'),
     'showIn'=>['CondGroupEmail'],
     'visual'=>[
     ],
     'control'=>[
-        'Отправить код на Email.',
-        'Только для сайта',
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_NAME2').'.',
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SITE'),
         [
             'type'=>'select',
             'id'=>'site_id',
@@ -107,7 +107,7 @@ $actionRules[] = [
             'defaultValue'=>'-'
         ],
         '.',
-        'Через почтовый шаблон с типом ',
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_TMPL_TYPE'),
         [
             'type'=>'select',
             'id'=>'tmpl_code',
@@ -123,31 +123,34 @@ $actionRules[] = [
             'defaultValue'=>''
         ],
         '.',
-        'Таймаут следующего кода',
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_TIMEOUT'),
         [
             'type'=>'input',
             'id'=>'timeout_code',
             'name'=>'timeout_code',
             'defaultValue'=>'60'
         ],
-        'секунд.',
-        'Отправлять письмо',
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SEC').'.',
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SEND_MAIL'),
         [
             'type'=>'select',
             'id'=>'method',
             'name'=>'method',
-            'values'=>['b_event'=>'на агентах, через b_event.','im'=>'немедленно.'],
+            'values'=>[
+                'b_event'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SEND_MAIL_1'),
+                'im'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SEND_MAIL_2')
+            ],
             'defaultValue'=>'im'
         ],
-        'Повторить правило',
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SEND_REPEAT'),
         [
             'type'=>'input',
             'id'=>'right_cnt',
             'name'=>'right_cnt',
             'defaultValue'=>'1000'
         ],
-        'раз. ',
-        'Код правила: ',
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_RAZ').'. ',
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_KOD').': ',
         [
             'type'=>'input',
             'id'=>'right_code',
@@ -175,13 +178,13 @@ $actionRulesSms[] = [
         ]
     ],
     'control'=>[
-        "Выполнить ",
+        Loc::getMessage('AWZ_AUTFORM_OPT_RULE_RUN')." ",
         [
             'id'=>'fLevel',
             'name'=>'aggregator',
             'type'=>'select',
             'values'=>[
-                'AND'=>'действия по порядку'
+                'AND'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_NAME1')
             ],
             'defaultText'=>'...',
             'defaultValue'=>'AND'
