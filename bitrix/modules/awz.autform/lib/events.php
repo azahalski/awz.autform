@@ -101,5 +101,19 @@ class Events {
      */
     const CHECK_RULE = 'checkRule';
 
+    /**
+     * После установки значений из request
+     */
+    const AFTER_SET_VALUES_V2 = 'onAfterSetValuesV2';
+
+    /**
+     * Перед определением действия
+     */
+    const BEFORE_SET_EVENTS_V2 = 'onBeforeSetEventsV2';
+
+    /**
+     * После регистрации пользователя в компоненте
+     */
+    const AFTER_REGISTER_V2 = 'onAfterRegisterV2';
 
 }

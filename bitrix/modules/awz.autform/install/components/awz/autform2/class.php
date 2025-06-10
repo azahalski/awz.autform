@@ -114,7 +114,11 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
             'CHECK_LOGIN',
             'CHECK_EMAIL',
             'CHECK_PHONE',
+            'REGISTER_ACTIVE_DSBL_CODE',
+            'REGISTER_ACTIVE_SYSLOGIN',
             'REGISTER_ACTIVE_NAME',
+            'REGISTER_ACTIVE_PHONE',
+            'REGISTER_SMS_ACTIVE_SYSLOGIN',
             'REGISTER_SMS_ACTIVE_NAME',
             'REGISTER_ACTIVE_PSW',
             'REGISTER_SMS_ACTIVE_PSW',
@@ -367,6 +371,16 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
                 $this->arResult['VALUES']['oferta'] = "Y";
             }
         }
+
+        $event = new Event(
+            'awz.autform', Events::AFTER_SET_VALUES_V2,
+            array(
+                'component'=>$this,
+                'request'=>$this->request
+            )
+        );
+        $event->send();
+
     }
 
     /**
@@ -431,6 +445,19 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
 
         $this->arResult['VALUES']['mode'] = $mode;
 
+        $event = new Event(
+            'awz.autform', Events::BEFORE_SET_EVENTS_V2,
+            array(
+                'component'=>$this,
+                'request'=>$this->request
+            )
+        );
+        $event->send();
+
+        if(!empty($this->getErrors())){
+            return null;
+        }
+
         if($mode === 'LOGIN_ACTIVE'){
             if(!$this->arResult['VALUES']['login']){
                 $this->addError(new Error(Loc::getMessage('AWZ_AUTFORM2_MODULE_NOT_PHONE_LOGIN'), 'login'));
@@ -451,8 +478,14 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
         }
         elseif($mode === 'REGISTER_ACTIVE'){
             $this->arResult['VALUES']['email'] = $this->checkEmail($this->arResult['VALUES']['email']);
+            if($this->arParams['REGISTER_ACTIVE_SYSLOGIN'] == 'Y' && !$this->arResult['VALUES']['login']){
+                $this->addError(new Error(Loc::getMessage('AWZ_AUTFORM2_CMP_SYSLOGIN_REQ'), 'login'));
+            }
             if($this->arParams['REGISTER_ACTIVE_NAME'] == 'Y' && !$this->arResult['VALUES']['name']){
                 $this->addError(new Error(Loc::getMessage('AWZ_AUTFORM2_CMP_NAME_REQ'), 'name'));
+            }
+            if($this->arParams['REGISTER_ACTIVE_PHONE'] == 'Y' && !$this->arResult['VALUES']['phone']){
+                $this->addError(new Error(Loc::getMessage('AWZ_AUTFORM2_CMP_PHONE_REQ'), 'phone'));
             }
             if($this->arParams['REGISTER_ACTIVE_PSW'] == 'Y' && !$this->arResult['VALUES']['password']){
                 $this->addError(new Error(Loc::getMessage('AWZ_AUTFORM2_CMP_PSW_REQ'), 'password'));
@@ -476,12 +509,17 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
                     return null;
                 }
             }
+            if($this->arParams['REGISTER_ACTIVE_DSBL_CODE'] == 'Y'){
+                $this->arResult['VALUES']['step'] = 'code_send';
+            }
             if($this->arResult['VALUES']['step'] == 'code_send'){
-                $this->checkCode(
-                    $this->arResult['VALUES']['email'],
-                    $this->arResult['VALUES']['code'],
-                    $mode
-                );
+                if($this->arParams['REGISTER_ACTIVE_DSBL_CODE'] != 'Y'){
+                    $this->checkCode(
+                        $this->arResult['VALUES']['email'],
+                        $this->arResult['VALUES']['code'],
+                        $mode
+                    );
+                }
                 if(empty($this->getErrors())){
                     $existsLogic = false;
 
@@ -512,6 +550,9 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
         }
         elseif($mode === 'REGISTER_SMS_ACTIVE'){
             $this->arResult['VALUES']['phone'] = $this->checkPhone($this->arResult['VALUES']['phone']);
+            if($this->arParams['REGISTER_SMS_ACTIVE_SYSLOGIN'] == 'Y' && !$this->arResult['VALUES']['login']){
+                $this->addError(new Error(Loc::getMessage('AWZ_AUTFORM2_CMP_SYSLOGIN_REQ'), 'login'));
+            }
             if($this->arParams['REGISTER_SMS_ACTIVE_NAME'] == 'Y' && !$this->arResult['VALUES']['name']){
                 $this->addError(new Error(Loc::getMessage('AWZ_AUTFORM2_CMP_NAME_REQ'), 'name'));
             }
@@ -683,11 +724,21 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
                 return null;
             }
 
-            $userLogin = $this->findUserFromLogin($values['email']);
-            if($userLogin) {
-                $userLogin = 'awz_'.time().Random::getString(5);
+            if($values['login']){
+                $userLogin = $this->findUserFromLogin($values['login']);
+                if($userLogin){
+                    $this->addError(Loc::getMessage('AWZ_AUTFORM2_MODULE_USER_REGISTER_FOUND3'));
+                    return null;
+                }else{
+                    $userLogin = $values['login'];
+                }
             }else{
-                $userLogin = $values['email'];
+                $userLogin = $this->findUserFromLogin($values['email']);
+                if($userLogin) {
+                    $userLogin = 'awz_'.time().Random::getString(5);
+                }else{
+                    $userLogin = $values['email'];
+                }
             }
 
             $arFieldsUser = Array(
@@ -762,6 +813,8 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
             $arFieldsUser['CONFIRM_PASSWORD'] = $password;
         }
 
+        $this->arResult['REGISTER_FIELDS'] = $arFieldsUser;
+
         $user = new \CUser;
         $userId = $user->Add($arFieldsUser);
         if(!$userId){
@@ -771,6 +824,17 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
 
         global $USER;
         $USER->Authorize($userId);
+
+        $event = new Event(
+            'awz.autform', Events::AFTER_REGISTER_V2,
+            array(
+                'component'=>$this,
+                'request'=>$this->request,
+                'params'=>$parameters,
+                'user'=>&$userId
+            )
+        );
+        $event->send();
 
         return array(
             'user'=>$userId

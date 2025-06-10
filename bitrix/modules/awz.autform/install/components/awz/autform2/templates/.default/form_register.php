@@ -52,6 +52,25 @@ $arParams['REGISTER_ACTIVE']=="Y" && $arParams['REGISTER_SMS_ACTIVE']=="Y"
                 </div>
             </div>
         <?}?>
+        <?if(($arResult['VALUES']['mode']=='REGISTER_ACTIVE' && $arParams['REGISTER_ACTIVE_SYSLOGIN'] == 'Y')
+            || ($merged && $arParams['REGISTER_SMS_ACTIVE_SYSLOGIN'] == 'Y')
+            || ($merged && $arParams['REGISTER_ACTIVE_SYSLOGIN'] == 'Y')
+        ){?>
+            <div class="awz-autform2__field_wrap">
+                <div class="ui-ctl ui-ctl-textbox">
+                    <div class="ui-ctl-tag"><?=Loc::getMessage('AWZ_AUTFORM2_TMPL_LABEL_LOGIN')?></div>
+                    <input <?if($arResult['VALUES']['step'] == 'code_send'){?>readonly="readonly" <?}?>type="text" class="ui-ctl-element" name="login" autocomplete="login" value="<?=htmlspecialcharsEx($arResult['VALUES']['login'])?>">
+                </div>
+            </div>
+        <?}?>
+        <?if($arResult['VALUES']['mode']=='REGISTER_ACTIVE' && $arParams['REGISTER_ACTIVE_PHONE'] == 'Y'){?>
+            <div class="awz-autform2__field_wrap">
+                <div class="ui-ctl ui-ctl-textbox">
+                    <div class="ui-ctl-tag"><?=Loc::getMessage('AWZ_AUTFORM2_TMPL_LABEL_PHONE')?></div>
+                    <input <?if($arResult['VALUES']['step'] == 'code_send'){?>readonly="readonly" <?}?>type="text" class="ui-ctl-element" name="phone" autocomplete="phone" value="<?=htmlspecialcharsEx($arResult['VALUES']['login'])?>">
+                </div>
+            </div>
+        <?}?>
         <?
         if($merged){
             ?>
@@ -99,7 +118,10 @@ $arParams['REGISTER_ACTIVE']=="Y" && $arParams['REGISTER_SMS_ACTIVE']=="Y"
                 </div>
             </div>
         <?}?>
+        <?if($arResult['VALUES']['mode']=='REGISTER_ACTIVE' && $arParams['REGISTER_ACTIVE_DSBL_CODE']=='Y'){?>
+        <?}else{?>
         <?include_once('include/code.php');?>
+        <?}?>
         <?include('include/agr.php')?>
         <input type="hidden" name="send" value="Y">
         <input type="hidden" name="mode" value="<?=$arResult['VALUES']['mode']?>">
@@ -111,7 +133,13 @@ $arParams['REGISTER_ACTIVE']=="Y" && $arParams['REGISTER_SMS_ACTIVE']=="Y"
                 <?}?>
             <?}?>
         </div>
-        <?if($arResult['VALUES']['step'] == 'code_send'){?>
+        <?if($arResult['VALUES']['mode']=='REGISTER_ACTIVE' && $arParams['REGISTER_ACTIVE_DSBL_CODE']=='Y'){?>
+            <div class="awz-autform2__btn_wrap">
+                <button class="awz-autform2__btn ui-btn ui-btn-primary" type="submit" name="submit">
+                    <?=Loc::getMessage('AWZ_AUTFORM2_TMPL_BTN_REGISTER')?>
+                </button>
+            </div>
+        <?}elseif($arResult['VALUES']['step'] == 'code_send'){?>
             <div class="awz-autform2__btn_wrap">
                 <button class="awz-autform2__btn ui-btn ui-btn-primary" type="submit" name="submit">
                     <?=$arResult['RCODE_RES']['item']['PRM']['rule_result']['button'] ?? Loc::getMessage('AWZ_AUTFORM2_TMPL_LABEL_SEND_CODE')?>
