@@ -127,7 +127,7 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
             'AGR_TITLE',
             'AGR_LINK',
             'AGR_ANCOR',
-            'AGR_SET',
+            'AGR_SET'
         ];
     }
 
@@ -243,6 +243,8 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
 
     public function sendFormAction(): string
     {
+        $this->setTemplateName($this->request->get('COMPONENT_TEMPLATE'));
+
         if(!$this->checkRequireModule()) return '';
 
         $this->arResult['VALUES'] = [];
@@ -306,6 +308,8 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
 
     public function getFormAction(): string
     {
+        $this->setTemplateName($this->request->get('COMPONENT_TEMPLATE'));
+
         if(!$this->checkRequireModule()) return '';
 
         if(!$this->arParams['autFormId']) {

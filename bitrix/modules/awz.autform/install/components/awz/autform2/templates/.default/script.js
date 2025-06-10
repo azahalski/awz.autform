@@ -112,7 +112,8 @@
                     'autFormId':parent.autFormId,
                     'mode':mode,
                     'SITE_ID':parent.siteId,
-                    'SITE_TEMPLATE':parent.templateId
+                    'SITE_TEMPLATE':parent.templateId,
+                    'COMPONENT_TEMPLATE':parent.templateName
                 };
             }else{
                 var formData = new FormData(
@@ -124,6 +125,7 @@
                 formData.append('autFormId', parent.autFormId);
                 formData.append('SITE_ID', parent.siteId);
                 formData.append('SITE_TEMPLATE', parent.templateId);
+                formData.append('COMPONENT_TEMPLATE', parent.templateName);
             }
 
             setTimeout(function(){
@@ -154,6 +156,8 @@
             formData.append('autFormId', parent.autFormId);
             formData.append('SITE_ID', parent.siteId);
             formData.append('SITE_TEMPLATE', parent.templateId);
+            formData.append('COMPONENT_TEMPLATE', parent.templateName);
+
 
             setTimeout(function(){
                 BX.ajax.runComponentAction('awz:autform2', 'sendForm', {
