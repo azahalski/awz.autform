@@ -113,7 +113,7 @@ class LogTable extends Entity\DataManager
         $maxDays = (string) Option::get(Events::MODULE_ID, 'ZHURNAL_SROCK', '0', '');
         if($maxDays){
             $filter = [
-                '<=DATE_DAY'=>DateTime::createFromTimestamp(strtotime('-'.$maxDays.'days'))
+                '<=CREATE_DATE'=>DateTime::createFromTimestamp(strtotime('-'.$maxDays.'days'))
             ];
             self::deleteByFilter($filter);
         }
