@@ -97,8 +97,8 @@ if($arParams['REGISTER_LOGIN']=='Y' && $arParams['LOGIN_REGISTER']=='Y'){
         <?include_once('include/code.php');?>
         <?include('include/agr.php')?>
         <input type="hidden" name="send" value="Y">
-        <input type="hidden" name="mode" value="<?=$arResult['VALUES']['mode']?>">
-        <input type="hidden" name="step" value="<?=$arResult['VALUES']['step']?>">
+        <input type="hidden" name="mode" value="<?=htmlspecialcharsEx($arResult['VALUES']['mode'])?>">
+        <input type="hidden" name="step" value="<?=htmlspecialcharsEx($arResult['VALUES']['step'])?>">
         <div class="awz-autform2__err">
             <?if(!empty($arResult['ERRORS'])){?>
                 <?foreach($arResult['ERRORS'] as $err){?>
