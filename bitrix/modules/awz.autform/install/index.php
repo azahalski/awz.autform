@@ -170,7 +170,7 @@ class awz_autform extends CModule {
     function InstallFiles()
     {
         CopyDirFiles($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/".$this->MODULE_ID."/install/components/awz/autform/", $_SERVER['DOCUMENT_ROOT']."/bitrix/components/awz/autform", true, true);
-        CopyDirFiles($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/".$this->MODULE_ID."/install/components/awz/autform2/", $_SERVER['DOCUMENT_ROOT']."/bitrix/components/awz/autform", true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT']."/bitrix/modules/".$this->MODULE_ID."/install/components/awz/autform2/", $_SERVER['DOCUMENT_ROOT']."/bitrix/components/awz/autform2", true, true);
         return true;
     }
 
