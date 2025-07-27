@@ -758,7 +758,7 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
             if($values['email']){
                 $arFieldsUser['EMAIL'] = $values['email'];
             }
-            if($values['phone']){
+            if($values['phone'] && (mb_strpos($values['phone'], '@')===false)){
                 $arFieldsUser['PERSONAL_PHONE'] = $values['phone'];
                 $arFieldsUser['PERSONAL_MOBILE'] = $values['phone'];
             }
@@ -800,7 +800,7 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
             }else{
                 $arFieldsUser['EMAIL'] = $values['email'];
             }
-            if($values['phone']){
+            if($values['phone'] && (mb_strpos($values['phone'], '@')===false)){
                 $arFieldsUser['PERSONAL_PHONE'] = $values['phone'];
                 $arFieldsUser['PERSONAL_MOBILE'] = $values['phone'];
             }
