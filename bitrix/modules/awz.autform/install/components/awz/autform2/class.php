@@ -119,6 +119,7 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
             'REGISTER_ACTIVE_NAME',
             'REGISTER_ACTIVE_PHONE',
             'REGISTER_SMS_ACTIVE_SYSLOGIN',
+            'REGISTER_SMS_ACTIVE_SYSEMAIL',
             'REGISTER_SMS_ACTIVE_NAME',
             'REGISTER_ACTIVE_PSW',
             'REGISTER_SMS_ACTIVE_PSW',
@@ -762,6 +763,10 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
                 $arFieldsUser['PERSONAL_PHONE'] = $values['phone'];
                 $arFieldsUser['PERSONAL_MOBILE'] = $values['phone'];
             }
+            $phoneRegRequired = Option::get('main', 'new_user_phone_auth', 'Y') === 'Y' ? true : false;
+            if($phoneRegRequired){
+                $arFieldsUser['PHONE_NUMBER'] = $arFieldsUser['PERSONAL_PHONE'];
+            }
 
         }
         elseif($mode === 'REGISTER_SMS_ACTIVE'){
@@ -803,6 +808,10 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
             if($values['phone'] && (mb_strpos($values['phone'], '@')===false)){
                 $arFieldsUser['PERSONAL_PHONE'] = $values['phone'];
                 $arFieldsUser['PERSONAL_MOBILE'] = $values['phone'];
+            }
+            $phoneRegRequired = Option::get('main', 'new_user_phone_auth', 'Y') === 'Y' ? true : false;
+            if($phoneRegRequired){
+                $arFieldsUser['PHONE_NUMBER'] = $arFieldsUser['PERSONAL_PHONE'];
             }
 
         }

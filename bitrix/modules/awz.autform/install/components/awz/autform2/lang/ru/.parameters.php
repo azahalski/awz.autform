@@ -27,6 +27,7 @@ $MESS['AWZ_AUTFORM2_PARAM_LABEL_REGISTER_ACTIVE'] = 'Разрешить реги
 $MESS['AWZ_AUTFORM2_PARAM_LABEL_REGISTER_ACTIVE_DSBL_CODE'] = 'Отключить подтверждение кодом';
 $MESS['AWZ_AUTFORM2_PARAM_LABEL_REGISTER_SMS_ACTIVE'] = 'Разрешить регистрацию по номеру телефона';
 $MESS['AWZ_AUTFORM2_PARAM_LABEL_REGISTER_SYSLOGIN'] = 'Запрашивать логин';
+$MESS['AWZ_AUTFORM2_PARAM_LABEL_REGISTER_SYSEMAIL'] = 'Запрашивать Email';
 $MESS['AWZ_AUTFORM2_PARAM_LABEL_REGISTER_NAME'] = 'Запрашивать ввод имя';
 $MESS['AWZ_AUTFORM2_PARAM_LABEL_REGISTER_PHONE'] = 'Запрашивать ввод телефона';
 $MESS['AWZ_AUTFORM2_PARAM_LABEL_REGISTER_PSW'] = 'Запрашивать ввод пароля';

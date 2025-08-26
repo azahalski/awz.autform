@@ -225,6 +225,13 @@ $arComponentParameters = array(
             "MULTIPLE" => "N",
             "DEFAULT" => "N",
         ],
+        "REGISTER_SMS_ACTIVE_NAME" => [
+            "PARENT" => "REGISTER_SMS",
+            "NAME" => Loc::getMessage('AWZ_AUTFORM2_PARAM_LABEL_REGISTER_NAME'),
+            "TYPE" => "CHECKBOX",
+            "MULTIPLE" => "N",
+            "DEFAULT" => "N",
+        ],
         "REGISTER_SMS_ACTIVE_SYSLOGIN" => [
             "PARENT" => "REGISTER_SMS",
             "NAME" => Loc::getMessage('AWZ_AUTFORM2_PARAM_LABEL_REGISTER_SYSLOGIN'),
@@ -232,9 +239,9 @@ $arComponentParameters = array(
             "MULTIPLE" => "N",
             "DEFAULT" => "N",
         ],
-        "REGISTER_SMS_ACTIVE_NAME" => [
+        "REGISTER_SMS_ACTIVE_SYSEMAIL" => [
             "PARENT" => "REGISTER_SMS",
-            "NAME" => Loc::getMessage('AWZ_AUTFORM2_PARAM_LABEL_REGISTER_NAME'),
+            "NAME" => Loc::getMessage('AWZ_AUTFORM2_PARAM_LABEL_REGISTER_SYSEMAIL'),
             "TYPE" => "CHECKBOX",
             "MULTIPLE" => "N",
             "DEFAULT" => "N",

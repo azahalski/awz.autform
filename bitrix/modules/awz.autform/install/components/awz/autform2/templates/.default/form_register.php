@@ -63,6 +63,14 @@ $arParams['REGISTER_ACTIVE']=="Y" && $arParams['REGISTER_SMS_ACTIVE']=="Y"
                 </div>
             </div>
         <?}?>
+        <?if($arResult['VALUES']['mode']=='REGISTER_SMS_ACTIVE' && $arParams['REGISTER_SMS_ACTIVE_SYSEMAIL'] == 'Y'){?>
+            <div class="awz-autform2__field_wrap">
+                <div class="ui-ctl ui-ctl-textbox">
+                    <div class="ui-ctl-tag"><?=Loc::getMessage('AWZ_AUTFORM2_TMPL_LABEL_EMAIL')?></div>
+                    <input <?if($arResult['VALUES']['step'] == 'code_send'){?>readonly="readonly" <?}?>type="text" class="ui-ctl-element" name="email" autocomplete="email" value="<?=htmlspecialcharsEx($arResult['VALUES']['email'])?>">
+                </div>
+            </div>
+        <?}?>
         <?if($arResult['VALUES']['mode']=='REGISTER_ACTIVE' && $arParams['REGISTER_ACTIVE_PHONE'] == 'Y'){?>
             <div class="awz-autform2__field_wrap">
                 <div class="ui-ctl ui-ctl-textbox">
