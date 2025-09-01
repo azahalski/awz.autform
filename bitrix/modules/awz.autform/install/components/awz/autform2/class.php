@@ -1366,7 +1366,8 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
                     '=PERSONAL_MOBILE'=>$phoneArray,
                     '=LOGIN'=>$phoneArray
                 ),
-                '!LOGIN'=>false
+                '!LOGIN'=>false,
+                '=ACTIVE'=>'Y'
             );
 
             $main_query = new Query(UserTable::getEntity());
