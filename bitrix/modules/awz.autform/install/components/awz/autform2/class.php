@@ -128,7 +128,8 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
             'AGR_TITLE',
             'AGR_LINK',
             'AGR_ANCOR',
-            'AGR_SET'
+            'AGR_SET',
+            'REM_ME'
         ];
     }
 
@@ -214,6 +215,9 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
                 $arParams['AGR_TITLE']
             );
         }
+
+        if(!$arParams['REM_ME'])
+            $arParams['REM_ME'] = 'Y';
 
         return $arParams;
     }
@@ -836,7 +840,7 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
         }
 
         global $USER;
-        $USER->Authorize($userId);
+        $USER->Authorize($userId, $this->arParams['REM_ME']==='Y');
 
         $event = new Event(
             'awz.autform', Events::AFTER_REGISTER_V2,
@@ -877,7 +881,7 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
         }
 
         global $USER;
-        $USER->Authorize($userId);
+        $USER->Authorize($userId, $this->arParams['REM_ME']==='Y');
 
         $event = new Event(
             'awz.autform', Events::AFTER_AUTH_SMS,
@@ -922,7 +926,7 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
         }
 
         global $USER;
-        $USER->Authorize($userId);
+        $USER->Authorize($userId, $this->arParams['REM_ME']==='Y');
 
         $event = new Event(
             'awz.autform', Events::AFTER_AUTH_SMS,
@@ -994,7 +998,7 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
         }
 
         global $USER;
-        $USER->Authorize($userId);
+        $USER->Authorize($userId, $this->arParams['REM_ME']==='Y');
 
         $event = new Event(
             'awz.autform', Events::AFTER_AUTH_PSW,

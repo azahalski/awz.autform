@@ -42,6 +42,14 @@ $arComponentParameters = array(
     ),
     "PARAMETERS" => [
 
+        "REM_ME" => [
+            "PARENT" => "DEF",
+            "NAME" => Loc::getMessage('AWZ_AUTFORM2_PARAM_LABEL_REM_ME'),
+            "TYPE" => "CHECKBOX",
+            "MULTIPLE" => "N",
+            "DEFAULT" => "Y"
+        ],
+
         "AGR_TITLE" => [
             "PARENT" => "AGR",
             "NAME" => Loc::getMessage('AWZ_AUTFORM2_PARAM_LABEL_AGR_TITLE'),

@@ -48,6 +48,7 @@ $MESS['AWZ_AUTFORM2_PARAM_LABEL_AGR_TITLE'] = 'Текст подтвержден
 $MESS['AWZ_AUTFORM2_PARAM_LABEL_AGR_LINK'] = 'Ссылка на соглашение';
 $MESS['AWZ_AUTFORM2_PARAM_LABEL_AGR_ANCOR'] = 'Анкор (название) ссылки на соглашение';
 $MESS['AWZ_AUTFORM2_PARAM_LABEL_AGR_SET'] = 'Чекбокс заполнен по умолчанию';
+$MESS['AWZ_AUTFORM2_PARAM_LABEL_REM_ME'] = 'Запоминать авторизацию';
 
 
 
