@@ -46,3 +46,6 @@ $MESS["AWZ_AUTFORM_OPT_RULE_SEND_REPEAT"] = "Повторить правило";
 $MESS["AWZ_AUTFORM_OPT_RULE_RAZ"] = "раз";
 $MESS["AWZ_AUTFORM_OPT_RULE_KOD"] = "Код правила";
 $MESS["AWZ_AUTFORM_OPT_RULE_RUN"] = "Выполнить";
+$MESS["AWZ_AUTFORM_OPT_RULE_TEST"] = "Тестовое подтверждение смс";
+$MESS["AWZ_AUTFORM_OPT_RULE_TEST_VALUE"] = "Принять код равный текущему времени";
+$MESS["AWZ_AUTFORM_OPT_RULE_TEST_VALUE_MIN"] = "минут";

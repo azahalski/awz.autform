@@ -161,7 +161,61 @@ $actionRules[] = [
     ]
 ];
 
-$actionRulesSms = [];
+$actionRulesSms = [
+    [
+        'controlId' => 'actionTestSms',
+        'group'=>true,
+        'label'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_TEST'),
+        'defaultText'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_TEST'),
+        'showIn'=>['CondGroupSms'],
+        'visual'=>[
+        ],
+        'control'=>[
+            Loc::getMessage('AWZ_AUTFORM_OPT_RULE_TEST_VALUE'),
+            '+',
+            [
+                'type'=>'input',
+                'id'=>'add_minutes',
+                'name'=>'add_minutes',
+                'defaultValue'=>'5'
+            ],
+            Loc::getMessage('AWZ_AUTFORM_OPT_RULE_TEST_VALUE_MIN').'.',
+            Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SITE'),
+            [
+                'type'=>'select',
+                'id'=>'site_id',
+                'name'=>'site_id',
+                'values'=>$siteValues,
+                'defaultValue'=>'-'
+            ],
+            '.',
+            Loc::getMessage('AWZ_AUTFORM_OPT_RULE_TIMEOUT'),
+            [
+                'type'=>'input',
+                'id'=>'timeout_code',
+                'name'=>'timeout_code',
+                'defaultValue'=>'60'
+            ],
+            Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SEC').'.',
+            Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SEND_REPEAT'),
+            [
+                'type'=>'input',
+                'id'=>'right_cnt',
+                'name'=>'right_cnt',
+                'defaultValue'=>'1000'
+            ],
+            Loc::getMessage('AWZ_AUTFORM_OPT_RULE_RAZ').'. ',
+            Loc::getMessage('AWZ_AUTFORM_OPT_RULE_KOD').': ',
+            [
+                'type'=>'input',
+                'id'=>'right_code',
+                'name'=>'right_code',
+                'defaultValue'=>'-'
+            ],
+            '.'
+        ]
+    ]
+];
 $actionRulesSms[] = [
     'controlId'=>'CondGroupSms',
     'defaultText'=>"",

@@ -291,6 +291,23 @@ class HandlersV2 {
                 }
             }
         }
+        elseif($rule['controlId']=='actionTestSms')
+        {
+            $phone = $event->getParameter('param');
+            $code = (int)(date("H").''.date("i")) + (int)$rule['add_minutes'];
+            $siteId = Application::getInstance()->getContext()->getSite();
+
+            if(!$rule['site_id'] || ($rule['site_id']=='-') || ($rule['site_id'] == $siteId)){
+                $result = new Result();
+                $result->setData([
+                    'code'=>$code,
+                    'nextCode'=>time()+(int)$rule['timeout_code'],
+                    'message'=>Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_SEND_CODE'),
+                    'button'=>Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_SEND_CODE_BTN'),
+                ]);
+                $event->setParameter('result', $result);
+            }
+        }
         elseif($rule['controlId'] == 'actionSendTransportSmsCode')
         {
             $phone = '+'.preg_replace('/([^0-9])/is','',$event->getParameter('param'));

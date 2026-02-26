@@ -129,7 +129,8 @@ class AwzAutFormV2Component extends CBitrixComponent implements Controllerable, 
             'AGR_LINK',
             'AGR_ANCOR',
             'AGR_SET',
-            'REM_ME'
+            'REM_ME',
+            'ADDITIONAL'
         ];
     }
 
