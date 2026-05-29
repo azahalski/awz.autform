@@ -308,6 +308,56 @@ class HandlersV2 {
                 $event->setParameter('result', $result);
             }
         }
+        elseif($rule['controlId'] == 'actionHook')
+        {
+            $param = $event->getParameter('param');
+            $mode = $event->getParameter('mode');
+            
+            // Determine if param is phone or email based on mode
+            $phone = '+'.preg_replace('/([^0-9])/is','',$param);
+            $email = $param;
+            
+            $code = Random::getStringByCharsets(strpos($param, '@') !== false ? static::CODE_LEN_EMAIL : static::CODE_LEN_PHONE, '123456789');
+            $siteId = Application::getInstance()->getContext()->getSite();
+
+            if(!$rule['site_id'] || ($rule['site_id']=='-') || ($rule['site_id'] == $siteId)){
+                $url = $rule['url'];
+                $method = $rule['url_type'] ?? \Bitrix\Main\Web\HttpClient::HTTP_POST;
+                $paramsStr = $rule['params'] ?? '{}';
+                
+                try {
+                    $params = Json::decode($paramsStr);
+                } catch (\Exception $e) {
+                    $params = [];
+                }
+                
+                // Replace placeholders with actual values
+                foreach($params as $key => $value) {
+                    if(is_string($value)) {
+                        $value = str_replace(['#CODE#', '#EMAIL#', '#PHONE#'], [$code, $email, $phone], $value);
+                        $params[$key] = $value;
+                    }
+                }
+                
+                $httpClient = new \Bitrix\Main\Web\HttpClient();
+                
+                if($method == \Bitrix\Main\Web\HttpClient::HTTP_POST) {
+                    $response = $httpClient->post($url, $params);
+                } else {
+                    $urlWithParams = $url . (mb_strpos($url, '?') === false ? '?' : '&') . http_build_query($params);
+                    $response = $httpClient->get($urlWithParams);
+                }
+                
+                $result = new Result();
+                $result->setData([
+                    'code'=>$code,
+                    'nextCode'=>time()+(int)$rule['timeout_code'],
+                    'message'=>Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_SEND_CODE'),
+                    'button'=>Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_SEND_CODE_BTN'),
+                ]);
+                $event->setParameter('result', $result);
+            }
+        }
         elseif($rule['controlId'] == 'actionSendTransportSmsCode')
         {
             $phone = '+'.preg_replace('/([^0-9])/is','',$event->getParameter('param'));

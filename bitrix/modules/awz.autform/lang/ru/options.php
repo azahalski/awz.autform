@@ -49,3 +49,7 @@ $MESS["AWZ_AUTFORM_OPT_RULE_RUN"] = "Выполнить";
 $MESS["AWZ_AUTFORM_OPT_RULE_TEST"] = "Тестовое подтверждение смс";
 $MESS["AWZ_AUTFORM_OPT_RULE_TEST_VALUE"] = "Принять код равный текущему времени";
 $MESS["AWZ_AUTFORM_OPT_RULE_TEST_VALUE_MIN"] = "минут";
+
+$MESS["AWZ_AUTFORM_OPT_RULE_NAME3"] = "Отправить HTTP запрос";
+$MESS["AWZ_AUTFORM_OPT_RULE_HTTP"] = "на Url";
+$MESS["AWZ_AUTFORM_OPT_RULE_HTTP_PARAMS"] = "с параметрами в json";

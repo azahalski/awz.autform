@@ -9,6 +9,7 @@ class Agents {
 
     public static function agentDeleteOldCodes(): string
     {
+
         $maxTime = intval(Option::get('awz.autform', 'MAX_TIME', '10', '')) * 60 + 86400*7;
 
         $r = CodesTable::getList(

@@ -161,6 +161,8 @@ $actionRules[] = [
     ]
 ];
 
+
+
 $actionRulesSms = [
     [
         'controlId' => 'actionTestSms',
@@ -244,6 +246,77 @@ $actionRulesSms[] = [
             'defaultValue'=>'AND'
         ]
     ]
+];
+
+$actionRules[] = [
+        'controlId' => 'actionHook',
+        'group'=>true,
+        'label'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_NAME3'),
+        'defaultText'=>Loc::getMessage('AWZ_AUTFORM_OPT_RULE_NAME3'),
+        'showIn'=>['CondGroupEmail','CondGroupSms'],
+        'visual'=>[
+        ],
+        'control'=>[
+                Loc::getMessage('AWZ_AUTFORM_OPT_RULE_NAME3').'.',
+                Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SITE'),
+                [
+                        'type'=>'select',
+                        'id'=>'site_id',
+                        'name'=>'site_id',
+                        'values'=>$siteValues,
+                        'defaultValue'=>'-'
+                ],
+                '.',
+                Loc::getMessage('AWZ_AUTFORM_OPT_RULE_HTTP'),
+                [
+                        'type'=>'input',
+                        'id'=>'url',
+                        'name'=>'url',
+                        'defaultValue'=>''
+                ],
+                [
+                        'type'=>'select',
+                        'id'=>'url_type',
+                        'name'=>'url_type',
+                        'values'=>[
+                                \Bitrix\Main\Web\HttpClient::HTTP_POST => 'POST',
+                                \Bitrix\Main\Web\HttpClient::HTTP_GET => 'GET'
+                        ],
+                        'defaultValue'=>\Bitrix\Main\Web\HttpClient::HTTP_POST
+                ],
+                Loc::getMessage('AWZ_AUTFORM_OPT_RULE_HTTP_PARAMS'),
+                [
+                        'type'=>'input',
+                        'id'=>'params',
+                        'name'=>'params',
+                        'defaultValue'=>'{"code":"#CODE#", "email": "#EMAIL"}'
+                ],
+                '.',
+                Loc::getMessage('AWZ_AUTFORM_OPT_RULE_TIMEOUT'),
+                [
+                        'type'=>'input',
+                        'id'=>'timeout_code',
+                        'name'=>'timeout_code',
+                        'defaultValue'=>'60'
+                ],
+                Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SEC').'.',
+                Loc::getMessage('AWZ_AUTFORM_OPT_RULE_SEND_REPEAT'),
+                [
+                        'type'=>'input',
+                        'id'=>'right_cnt',
+                        'name'=>'right_cnt',
+                        'defaultValue'=>'1000'
+                ],
+                Loc::getMessage('AWZ_AUTFORM_OPT_RULE_RAZ').'. ',
+                Loc::getMessage('AWZ_AUTFORM_OPT_RULE_KOD').': ',
+                [
+                        'type'=>'input',
+                        'id'=>'right_code',
+                        'name'=>'right_code',
+                        'defaultValue'=>'-'
+                ],
+                '.'
+        ]
 ];
 
 $event = new \Bitrix\Main\Event(
