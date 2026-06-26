@@ -23,9 +23,14 @@ class Aut implements SmsForm {
 
     public static function tmplHtml($value=""): string
     {
-        if(!$value) serialize(array());
-
-        $data = unserialize($value, ["allowed_classes" => false]);
+        //первая больше или равна второй
+        if(\CheckVersion(\Bitrix\Main\ModuleManager::getVersion('mlife.smsservices'), '2.2.8')){
+            if(!$value) $value = \Bitrix\Main\Web\Json::encode(array());
+            $data = \Bitrix\Main\Web\Json::decode($value);
+        }else{
+            if(!$value) $value = serialize(array());
+            $data = unserialize($value, ['allowed_classes'=> false]);
+        }
 
         $MCR_EXT = Loc::getMessage('AWZ_AUTFORM_HANDLESMS_DEFAULT_MACROS').'<br><br>';
         $fields = UserTable::getMap();
