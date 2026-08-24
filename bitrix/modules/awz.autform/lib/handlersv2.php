@@ -224,7 +224,23 @@ class HandlersV2 {
                         ]
                     );
                     while($arData = $res->fetch()){
-                        $arData['PARAMS'] = unserialize($arData['PARAMS'], ["allowed_classes" => false]);
+                        if(!is_array($arData['PARAMS'])){
+                            try{
+                                $tmp = \Bitrix\Main\Web\Json::decode($arData['PARAMS']);
+                            }catch (\Exception $e){
+
+                            }
+                            if(empty($tmp)){
+                                try{
+                                    $tmp = unserialize($arData['PARAMS'], ["allowed_classes" => false]);
+                                }catch (\Exception $e){
+
+                                }
+                            }
+                            if(!empty($tmp)){
+                                $arData['PARAMS'] = $tmp;
+                            }
+                        }
                         if($arData['PARAMS']['PHONE']){
                             $arData['TEMPLATE'] = \Mlife\Smsservices\Events::compileTemplate($arData['TEMPLATE'], $arMakros);
                             $phoneAr = str_replace(array_keys($arMakros), $arMakros, $arData['PARAMS']['PHONE']);

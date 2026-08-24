@@ -125,7 +125,23 @@ class Aut implements SmsForm {
         $findTemplate = false;
         $smsSending = false;
         while($arData = $res->fetch()) {
-            $arData['PARAMS'] = unserialize($arData['PARAMS'], ["allowed_classes" => false]);
+            if(!is_array($arData['PARAMS'])){
+                try{
+                    $tmp = \Bitrix\Main\Web\Json::decode($arData['PARAMS']);
+                }catch (\Exception $e){
+
+                }
+                if(empty($tmp)){
+                    try{
+                        $tmp = unserialize($arData['PARAMS'], ["allowed_classes" => false]);
+                    }catch (\Exception $e){
+
+                    }
+                }
+                if(!empty($tmp)){
+                    $arData['PARAMS'] = $tmp;
+                }
+            }
             $findTemplate = true;
 
             if($arData['PARAMS']['PHONE']){
