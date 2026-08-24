@@ -459,7 +459,7 @@ $tabControl->BeginNextTab();
                 $params[0] = $actionValues;
             }
 
-            if($_REQUEST['type']=='condRulesEmail'){
+            if($_REQUEST['type']=='condRulesEmail' && $MODULE_RIGHT == "W"){
                 $paramsNew = [];
                 $down = isset($_REQUEST['down']) ? preg_replace('/[^a-zA-Z0-9_\-]/', '', $_REQUEST['down']) : '';
                 $keyAr = explode('__', $down);
@@ -600,7 +600,7 @@ $tabControl->BeginNextTab();
                 $params[0] = $actionValues;
             }
 
-            if($_REQUEST['type']=='condRulesSms'){
+            if($_REQUEST['type']=='condRulesSms' && $MODULE_RIGHT == "W"){
                 $paramsNew = [];
                 $down = isset($_REQUEST['down']) ? preg_replace('/[^a-zA-Z0-9_\-]/', '', $_REQUEST['down']) : '';
                 $keyAr = explode('__', $down);
