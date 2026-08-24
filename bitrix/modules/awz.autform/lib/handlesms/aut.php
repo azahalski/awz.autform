@@ -45,7 +45,7 @@ class Aut implements SmsForm {
         //$MCR_EXT = \Mlife\Smsservices\Fields::getOrderCodes(Loc::getMessage("MLIFE_SMSSERVICES_FIELDS_MACROS_NEWORDER"));
         $html = '<tr><td>'.Loc::getMessage("MLIFE_SMSSERVICES_FIELDS_MACROS").'</td><td>'.$MCR_EXT.'</td></tr><tr>';
         $html .= '<td><b>'.Loc::getMessage("MLIFE_SMSSERVICES_FIELDS_TO").'</b></td>';
-        $html .= '<td><input type="text" name="PARAMS_PHONE" value="'.$data['PHONE'].'"/></td>';
+        $html .= '<td><input type="text" name="PARAMS_PHONE" value="'.htmlspecialcharsEx($data['PHONE']).'"/></td>';
         $html .= '</tr>';
 
         $html .= '<td><b>'.Loc::getMessage("MLIFE_SMSSERVICES_FIELDS_APPSMS").'</b></td>';

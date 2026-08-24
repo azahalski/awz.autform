@@ -93,7 +93,7 @@ class HandlersV2 {
                 $component->addError(Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_ERR_CODE_NOT_EXISTS'), 'code');
             }elseif($checkRes['PRM']['count'] >= Option::get(Events::MODULE_ID, "MAX_CHECK", "10", "")){
                 $component->addError(Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_MAX_LIMIT_ERR'), 'code');
-            }elseif(\bitrix_sessid() != $checkRes['PRM']['csrf']){
+            }elseif(!hash_equals((string)$checkRes['PRM']['csrf'], (string)\bitrix_sessid())){
                 $component->addError(Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_ERR_SESS'), 'code');
             }elseif(strtotime($curDate->toString()) > strtotime($checkRes['EXPIRED_DATE']->toString())){
                 $component->addError(Loc::getMessage('AWZ_AUTFORM_HANDLERSV2_ERR_CODE_EXPIRED'), 'code');

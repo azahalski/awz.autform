@@ -907,7 +907,7 @@ class AwzAutFormComponent extends CBitrixComponent implements Controllerable, Er
             $salt = substr($userData['PASSWORD'], 0, (strlen($userData['PASSWORD']) - 32));
             $realPassword = substr($userData['PASSWORD'], -32);
             $password = md5($salt.$password);
-            return ($password == $realPassword);
+            return hash_equals($realPassword, $password);
         }else{
             return Security\Password::equals($userData['PASSWORD'], $password);
         }

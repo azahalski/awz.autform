@@ -461,7 +461,8 @@ $tabControl->BeginNextTab();
 
             if($_REQUEST['type']=='condRulesEmail'){
                 $paramsNew = [];
-                $keyAr = explode('__', $_REQUEST['down']);
+                $down = isset($_REQUEST['down']) ? preg_replace('/[^a-zA-Z0-9_\-]/', '', $_REQUEST['down']) : '';
+                $keyAr = explode('__', $down);
                 $key = end($keyAr);
                 $next = false;
                 foreach($params[0]['children'] as $keyReal=>$row){
@@ -601,7 +602,8 @@ $tabControl->BeginNextTab();
 
             if($_REQUEST['type']=='condRulesSms'){
                 $paramsNew = [];
-                $keyAr = explode('__', $_REQUEST['down']);
+                $down = isset($_REQUEST['down']) ? preg_replace('/[^a-zA-Z0-9_\-]/', '', $_REQUEST['down']) : '';
+                $keyAr = explode('__', $down);
                 $key = end($keyAr);
                 $next = false;
                 foreach($params[0]['children'] as $keyReal=>$row){
