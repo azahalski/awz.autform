@@ -486,7 +486,7 @@ $tabControl->BeginNextTab();
                     $finJson['0__'.$k] = $v['values'];
                 }
                 Option::set($module_id, "RULES_EMAIL", Json::encode($finJson), "");
-                LocalRedirect($APPLICATION->GetCurPage().'?mid='.htmlspecialcharsbx($module_id).'&lang=LANGUAGE_ID&mid_menu=1');
+                LocalRedirect($APPLICATION->GetCurPage().'?mid='.htmlspecialcharsbx($module_id).'&lang='.LANGUAGE_ID.'&mid_menu=1');
             }
 
             ?>
@@ -627,7 +627,7 @@ $tabControl->BeginNextTab();
                     $finJson['0__'.$k] = $v['values'];
                 }
                 Option::set($module_id, "RULES_SMS", Json::encode($finJson), "");
-                LocalRedirect($APPLICATION->GetCurPage().'?mid='.htmlspecialcharsbx($module_id).'&lang=LANGUAGE_ID&mid_menu=1');
+                LocalRedirect($APPLICATION->GetCurPage().'?mid='.htmlspecialcharsbx($module_id).'&lang='.LANGUAGE_ID.'&mid_menu=1');
             }
 
             ?>
