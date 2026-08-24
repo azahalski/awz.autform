@@ -1,0 +1,25 @@
+<?php
+$MESS['AWZ_AUTFORM_PARAM_GROUP_DEF'] = 'Общие параметры';
+$MESS['AWZ_AUTFORM_PARAM_GROUP_LOGIN'] = 'Авторизация по паролю';
+$MESS['AWZ_AUTFORM_PARAM_GROUP_LOGIN_SMS'] = 'Авторизация по смс';
+$MESS['AWZ_AUTFORM_PARAM_GROUP_REGISTER'] = 'Регистрация по смс';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_COUNTRY_CODE'] = 'Код страны';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_PERSONAL_LINK'] = 'Ссылка на личный кабинет';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_LOGIN_GROUPS'] = 'Группы для которых разрешена авторизация';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_LOGIN_GROUPS_DEL'] = 'Группы для которых запрещена авторизация';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_LOGIN_GROUPS_DEL2'] = 'Искать пользователей состоящих в одной из групп';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_LOGIN_GROUPS_DEL3'] = 'Исключить ид пользователей из поиска (через запятую 1,2,101)';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_LOGIN_SMS_GROUPS'] = 'Группы для которых разрешен вход по смс';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_REGISTER_GROUPS'] = 'Группы в которые регистрировать пользователей';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_LOGIN_SMS_GROUPS_DEL'] = 'Группы для которых запрещен вход по смс';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_AGREEMENT'] = 'Идентификатор соглашения';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_AGREEMENT_DSBL'] = 'Не спрашивать согласие (отключить)';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_FIND_TYPE'] = 'Порядок поиска пользователя по номеру';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_FIND_TYPE_USER'] = 'пользователь';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_FIND_TYPE_ORDER'] = 'заказ';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_SALE_PROP'] = 'Код свойства заказа с номером телефона';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_REGISTER_LOGIN'] = 'Объединить регистрацию и авторизацию по смс';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_CHECK_LOGIN'] = 'Искать пользователя по логину';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_MODE_MESS'] = 'Тип языковых сообщений';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_MODE_MESS_SMS'] = 'Смс сообщения';
+$MESS['AWZ_AUTFORM_PARAM_LABEL_MODE_MESS_CALL'] = 'Звонок';

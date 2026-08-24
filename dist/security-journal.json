@@ -1,0 +1,381 @@
+{
+  "schema_version": "1.0",
+  "module": {
+    "code": "awz.autform"
+  },
+  "current_state": {
+    "status": "needs_review",
+    "last_run_id": "awz.autform-1756024320",
+    "archive_sha256": null,
+    "open_findings": 0,
+    "blocking_findings_open": 0,
+    "false_positive_findings": 2,
+    "accepted_risk_findings": 3,
+    "fixed_findings": 0,
+    "removed_findings": 0,
+    "total_findings": 5
+  },
+  "runs": [
+    {
+      "run_id": "awz.autform-1724500000",
+      "created_at": "2026-08-24T12:02:33+00:00",
+      "archive_sha256": null,
+      "scanner_request_id": "awz.autform-1724500000",
+      "input_summary": "Found 0 vulnerabilities in 0 files out of 53 module files analyzed. Maximum severity: none.",
+      "summary": {
+        "current_scan_findings": 0,
+        "severity_counts": {},
+        "new_findings": 0,
+        "still_open_findings": 0,
+        "reopened_findings": 0,
+        "resolved_since_previous_run": 0
+      }
+    },
+    {
+      "run_id": "awz.autform-1756024320",
+      "created_at": "2026-08-24T12:14:40+00:00",
+      "archive_sha256": null,
+      "scanner_request_id": "awz.autform-1756024320",
+      "input_summary": "Обнаружено 5 уязвимостей в 4 файлах при анализе 53 файлов модуля. Максимальная severity: high.",
+      "summary": {
+        "current_scan_findings": 5,
+        "severity_counts": {
+          "high": 1,
+          "medium": 1,
+          "low": 3
+        },
+        "new_findings": 5,
+        "still_open_findings": 0,
+        "reopened_findings": 0,
+        "resolved_since_previous_run": 0
+      }
+    }
+  ],
+  "findings": [
+    {
+      "journal_finding_id": "JF-00001",
+      "fingerprint": "07091fc1cc409554b4bc736c13f6c0de",
+      "type": "SSRF",
+      "severity": "high",
+      "status": "false_positive",
+      "first_seen_run_id": "awz.autform-1756024320",
+      "last_seen_run_id": "awz.autform-1756024320",
+      "resolved_run_id": null,
+      "original_location": {
+        "file": "lib/handlersv2.php",
+        "line": "340-365"
+      },
+      "current_location": {
+        "file": "lib/handlersv2.php",
+        "line": "340-365"
+      },
+      "latest_vulnerability": {
+        "file": "lib/handlersv2.php",
+        "line": "340-365",
+        "type": "SSRF",
+        "severity": "high",
+        "description": "Подтверждена SSRF (Server-Side Request Forgery). В методе sendCodeAction строка 341 URL для HTTP-запроса берётся напрямую из конфигурации правила ($rule['url']) без какой-либо валидации. Атакующий, имеющий возможность изменить конфигурацию модуля (например, через административную панель), может указать произвольный URL, включая внутренние сетевые ресурсы (localhost, internal APIs, metadata services). Строка 358 создаёт новый экземпляр HttpClient, строка 361-365 выполняет POST или GET запрос к указанному URL с подставленными параметрами. Это позволяет сканировать внутреннюю сеть, обращаться к metadata service облачных провайдеров (169.254.169.254), и т.д.",
+        "recommendation": "Добавить валидацию URL перед отправкой запроса. Запретить протоколы кроме http/https. Проверять, что хост не является внутренним IP-адресом. Использовать allowlist доменов если адресация известна заранее.",
+        "fix": "Before:\n$url = $rule['url'];\n$httpClient = new \\Bitrix\\Main\\Web\\HttpClient();\nif($method == \\Bitrix\\Main\\Web\\HttpClient::HTTP_POST) {\n    $response = $httpClient->post($url, $params);\n} else {\n    $response = $httpClient->get($urlWithParams);\n}\n\nAfter:\nuse Bitrix\\Main\\Engine\\Filter\\Authentication;\n\n// Валидация URL\n$parsedUrl = parse_url($rule['url']);\nif (!$parsedUrl || !isset($parsedUrl['host'])) {\n    throw new \\Exception('Invalid URL');\n}\n\n// Запрет внутренних адресов\n$host = $parsedUrl['host'];\nif (preg_match('/^(127\\.\\.|10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.|localhost|\\[::1\\])/i', $host)) {\n    throw new \\Exception('Internal host blocked');\n}\n\n// Разрешены только http/https\nif (!in_array($parsedUrl['scheme'] ?? '', ['http', 'https'], true)) {\n    throw new \\Exception('Only HTTP/HTTPS allowed');\n}\n\n$httpClient = new \\Bitrix\\Main\\Web\\HttpClient();",
+        "reviewed": {
+          "oldSeverity": "high",
+          "newSeverity": "high",
+          "changed": false,
+          "category": "kept-as-reported",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "false_positive",
+          "note": "Атакующий администратор может менять параметры веб хука как ему нужно",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-08-24T12:19:05+00:00"
+        }
+      },
+      "events": [
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "detected",
+          "at": "2026-08-24T12:14:40+00:00",
+          "location": {
+            "file": "lib/handlersv2.php",
+            "line": "340-365"
+          },
+          "status": "open"
+        },
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "partner_disposition_updated",
+          "at": "2026-08-24T12:19:05+00:00",
+          "status": "false_positive",
+          "note": "Атакующий администратор может менять параметры веб хука как ему нужно",
+          "author": "Andrew Zahalski"
+        }
+      ]
+    },
+    {
+      "journal_finding_id": "JF-00002",
+      "fingerprint": "9b172a03a8decc130a6de14bfbc91503",
+      "type": "Command Injection",
+      "severity": "medium",
+      "status": "accepted_risk",
+      "first_seen_run_id": "awz.autform-1756024320",
+      "last_seen_run_id": "awz.autform-1756024320",
+      "resolved_run_id": null,
+      "original_location": {
+        "file": "lib/handlersv2.php",
+        "line": "341"
+      },
+      "current_location": {
+        "file": "lib/handlersv2.php",
+        "line": "341"
+      },
+      "latest_vulnerability": {
+        "file": "lib/handlersv2.php",
+        "line": "341",
+        "type": "Command Injection",
+        "severity": "medium",
+        "description": "Подозрение: URL и параметры HTTP-запроса передаются в HttpClient без достаточной валидации. Если атакующий может контролировать содержимое $rule['url'] или $rule['params'] (через базу данных или файлы конфигурации), он может попытаться внедрить вредоносные данные в HTTP-запрос. Параметры заменяются str_replace (строка 353) без санитизации плейсхолдеров.",
+        "recommendation": "Валидировать и экранировать все входные данные перед использованием в HTTP-запросах. Проверять структуру $rule['params'] и тип значений.",
+        "fix": "Before:\nforeach($params as $key => $value) {\n    if(is_string($value)) {\n        $value = str_replace(['#CODE#', '#EMAIL#', '#PHONE#'], [$code, $email, $phone], $value);\n        $params[$key] = $value;\n    }\n}\n\nAfter:\nforeach($params as $key => $value) {\n    if(is_string($value)) {\n        // Валидация типа значения\n        $value = mb_substr($value, 0, 2048, 'UTF-8');\n        $value = str_replace(['#CODE#', '#EMAIL#', '#PHONE#'], [$code, $email, $phone], $value);\n        $params[$key] = $value;\n    }\n}",
+        "reviewed": {
+          "oldSeverity": "medium",
+          "newSeverity": "medium",
+          "changed": false,
+          "category": "kept-as-reported",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-08-24T12:19:05+00:00"
+        }
+      },
+      "events": [
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "detected",
+          "at": "2026-08-24T12:14:40+00:00",
+          "location": {
+            "file": "lib/handlersv2.php",
+            "line": "341"
+          },
+          "status": "open"
+        },
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "partner_disposition_updated",
+          "at": "2026-08-24T12:19:05+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        }
+      ]
+    },
+    {
+      "journal_finding_id": "JF-00003",
+      "fingerprint": "a125e24a50f4140a4c3ab8e98e212df0",
+      "type": "Information Disclosure",
+      "severity": "low",
+      "status": "accepted_risk",
+      "first_seen_run_id": "awz.autform-1756024320",
+      "last_seen_run_id": "awz.autform-1756024320",
+      "resolved_run_id": null,
+      "original_location": {
+        "file": "options.php",
+        "line": "333,349"
+      },
+      "current_location": {
+        "file": "options.php",
+        "line": "333,349"
+      },
+      "latest_vulnerability": {
+        "file": "options.php",
+        "line": "333,349",
+        "type": "Information Disclosure",
+        "severity": "low",
+        "description": "Подозрение: Данные из $_REQUEST (строки 333, 349 - email и sms правила) обрабатываются без строгой валидации формата. Хотя check_bitrix_sessid() вызывается (строка 330), сами значения email/sms правил не проходят санитизацию перед сохранением в Option. Это может привести к хранению некорректных данных в конфигурации модуля.",
+        "recommendation": "Добавить валидацию формата email и санитизацию SMS-правил перед сохранением в опции модуля.",
+        "fix": "Before:\n$rule1 = $_REQUEST['email'];\n$rule1 = $_REQUEST['sms'];\n\nAfter:\n$rule1 = $_REQUEST['email'];\nif (is_array($rule1)) {\n    foreach ($rule1 as &$item) {\n        $item = json_decode($item, true);\n        if (json_last_error() !== JSON_ERROR_NONE) {\n            unset($item);\n            break;\n        }\n    }\n}\n\n$rule1 = $_REQUEST['sms'];",
+        "reviewed": {
+          "oldSeverity": "low",
+          "newSeverity": "low",
+          "changed": false,
+          "category": "kept-as-reported",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-08-24T12:19:05+00:00"
+        }
+      },
+      "events": [
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "detected",
+          "at": "2026-08-24T12:14:40+00:00",
+          "location": {
+            "file": "options.php",
+            "line": "333,349"
+          },
+          "status": "open"
+        },
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "partner_disposition_updated",
+          "at": "2026-08-24T12:19:05+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        }
+      ]
+    },
+    {
+      "journal_finding_id": "JF-00004",
+      "fingerprint": "7e4ff0b727daf7cac9391b3fc3d71264",
+      "type": "Information Disclosure",
+      "severity": "low",
+      "status": "false_positive",
+      "first_seen_run_id": "awz.autform-1756024320",
+      "last_seen_run_id": "awz.autform-1756024320",
+      "resolved_run_id": null,
+      "original_location": {
+        "file": "lib/handlesms/aut.php",
+        "line": "62-63"
+      },
+      "current_location": {
+        "file": "lib/handlesms/aut.php",
+        "line": "62-63"
+      },
+      "latest_vulnerability": {
+        "file": "lib/handlesms/aut.php",
+        "line": "62-63",
+        "type": "Information Disclosure",
+        "severity": "low",
+        "description": "Подозрение: В функции tmplHtmlSave строки 62-63 данные из $_REQUEST ('PARAMS_PHONE' и 'PARAMS_APPSMS') используются напрямую для формирования PARAMS без санитизации. Телефонный номер не форматируется и не проверяется на допустимые символы перед сериализацией и сохранением.",
+        "recommendation": "Добавить санитизацию PHONE: удалить все символы кроме цифр и плюса. Для APPSMS использовать строгую проверку на 'Y'/'N'.",
+        "fix": "Before:\n$PARAMS = array(\n    \"PHONE\"=>trim($_REQUEST['PARAMS_PHONE']),\n    \"APPSMS\"=>trim($_REQUEST['PARAMS_APPSMS'])\n);\n\nAfter:\n$PARAMS = array(\n    \"PHONE\"=>'+'.preg_replace('/([^0-9])/','',trim($_REQUEST['PARAMS_PHONE'])),\n    \"APPSMS\"=>(trim($_REQUEST['PARAMS_APPSMS'])==='Y')?'Y':'N'\n);",
+        "reviewed": {
+          "oldSeverity": "low",
+          "newSeverity": "low",
+          "changed": false,
+          "category": "kept-as-reported",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "false_positive",
+          "note": "В строке могут быть не только номера, но и макросы, также запятые и т.д.",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-08-24T12:19:05+00:00"
+        }
+      },
+      "events": [
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "detected",
+          "at": "2026-08-24T12:14:40+00:00",
+          "location": {
+            "file": "lib/handlesms/aut.php",
+            "line": "62-63"
+          },
+          "status": "open"
+        },
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "partner_disposition_updated",
+          "at": "2026-08-24T12:19:05+00:00",
+          "status": "false_positive",
+          "note": "В строке могут быть не только номера, но и макросы, также запятые и т.д.",
+          "author": "Andrew Zahalski"
+        }
+      ]
+    },
+    {
+      "journal_finding_id": "JF-00005",
+      "fingerprint": "775388bbf2e3f501f93c5ca555a726ab",
+      "type": "Insecure Deserialization",
+      "severity": "low",
+      "status": "accepted_risk",
+      "first_seen_run_id": "awz.autform-1756024320",
+      "last_seen_run_id": "awz.autform-1756024320",
+      "resolved_run_id": null,
+      "original_location": {
+        "file": "lib/handlersv2.php\nlib/handlesms/aut.php\nlib/codes.php\nlib/log.php",
+        "line": "235,32,78,68"
+      },
+      "current_location": {
+        "file": "lib/handlersv2.php\nlib/handlesms/aut.php\nlib/codes.php\nlib/log.php",
+        "line": "235,32,78,68"
+      },
+      "latest_vulnerability": {
+        "file": "lib/handlersv2.php\nlib/handlesms/aut.php\nlib/codes.php\nlib/log.php",
+        "line": "235,32,78,68",
+        "type": "Insecure Deserialization",
+        "severity": "low",
+        "description": "Подтверждена небезопасная десериализация в нескольких файлах. Во всех случаях используется unserialize() с опцией ['allowed_classes' => false], что снижает риск удалённого выполнения кода, но не исключает полностью риски, связанные с garbage collection атаками и DoS. Данные PARAMS могут быть загружены из базы данных и содержать вредоносные объекты.",
+        "recommendation": "Заменить serialize/unserialize на JSON encode/decode везде, где это возможно. Если необходимо использовать unserialize — всегда проверять источник данных и использовать allowed_classes => false.",
+        "fix": "Before:\n$tmp = unserialize($arData['PARAMS'], [\"allowed_classes\" => false]);\n\nAfter:\ntry {\n    $tmp = \\Bitrix\\Main\\Web\\Json::decode($arData['PARAMS']);\n} catch (\\Exception $e) {\n    $tmp = [];\n}",
+        "reviewed": {
+          "oldSeverity": "low",
+          "newSeverity": "low",
+          "changed": false,
+          "category": "kept-as-reported",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-08-24T12:19:05+00:00"
+        }
+      },
+      "events": [
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "detected",
+          "at": "2026-08-24T12:14:40+00:00",
+          "location": {
+            "file": "lib/handlersv2.php\nlib/handlesms/aut.php\nlib/codes.php\nlib/log.php",
+            "line": "235,32,78,68"
+          },
+          "status": "open"
+        },
+        {
+          "run_id": "awz.autform-1756024320",
+          "event": "partner_disposition_updated",
+          "at": "2026-08-24T12:19:05+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        }
+      ]
+    }
+  ]
+}

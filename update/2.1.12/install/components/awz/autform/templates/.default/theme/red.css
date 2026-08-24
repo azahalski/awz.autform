@@ -1,0 +1,51 @@
+.awz-autform-theme-red .awz-autform-modal-content-wrap {
+    background:#ffffff;
+}
+.awz-autform-form-links {border-bottom:2px solid red;margin-bottom:10px;}
+.awz-autform-theme-red .awz-autform-form-links a {background:#ededed;color:#000000;}
+.awz-autform-theme-red .awz-autform-form-links a:hover,
+.awz-autform-theme-red .awz-autform-form-links a.active {background: red; color:#ffffff;}
+.awz-autform-theme-red .awz-autform-link-block {
+    border:1px solid red;
+}
+.awz-autform-theme-red .awz-autform-modal-content-bg {
+    background:#000000;opacity:0.85;
+}
+.awz-autform-theme-red .awz-autform-close .awz-autform-close-leftright {
+    background-color: red;
+}
+.awz-autform-theme-red .awz-autform-close .awz-autform-close-rightleft {
+    background-color: red;
+}
+.awz-autform-theme-red .awz-autform-close .awz-autform-close-close-btn {
+    color: red;
+}
+.awz-autform-theme-red .awz-autform-close div:hover .awz-autform-close-leftright {
+    background-color: red;
+}
+.awz-autform-theme-red .awz-autform-close div:hover .awz-autform-close-rightleft {
+    background-color: red;
+}
+.awz-autform-theme-red .awz-autform-modal-header {
+    background:red;color:#ffffff;
+}
+.awz-autform-theme-red .awz-autform-modal-error {
+    color:red;
+}
+.awz-autform-theme-red .awz-autform-preload {
+    background:#ffffff;opacity:0.85;
+}
+.awz-autform-theme-red .awz-autform-load {
+    color:red;
+}
+.awz-autform-theme-red .awz-autform-close-mobile {
+    background:#fffcc0;
+}
+.awz-autform-theme-red .awz-autform-error-row {
+    color:red;
+}
+.awz-autform-theme-red .awz-autform-message-row {
+    color:green;
+}
+.awz-autform-theme-red .awz-autform-form-buttons button {color:#ffffff;background:red;}
+.awz-autform-theme-red .awz-autform-form-buttons button:hover {color:#ffffff;background: #d0021b;}

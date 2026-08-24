@@ -1,0 +1,25 @@
+<?php
+$MESS["AWZ_AUTFORM_HANDLERSV2_NOT_EXPIRED"] = 'Код уже отправлен, следующая попытка отправки кода не раньше #DATE#.';
+$MESS["AWZ_AUTFORM_HANDLERSV2_NOCODE"] = 'Укажите код';
+$MESS["AWZ_AUTFORM_HANDLERSV2_MAX_LIMIT_ERR"] = 'Превышено максимальное количество попыток ввода.';
+$MESS["AWZ_AUTFORM_HANDLERSV2_ERR_SESS"] = 'Неверный идентификатор сессии, обновите страницу и попробуйте еще раз.';
+$MESS["AWZ_AUTFORM_HANDLERSV2_ERR_CODE_EXPIRED"] = 'Код подтверждения просрочен.';
+$MESS["AWZ_AUTFORM_HANDLERSV2_ERR_CODE"] = 'Неверный код подтверждения.';
+$MESS["AWZ_AUTFORM_HANDLERSV2_ERR_FORMAT"] = 'Неверный код подтверждения.';
+$MESS["AWZ_AUTFORM_HANDLERSV2_ERR_CODE_NOT_EXISTS"] = 'Код не отправлялся.';
+$MESS["AWZ_AUTFORM_HANDLERSV2_ERR_NORIGHT"] = "Нет правил для отправки кодов на Email.";
+$MESS["AWZ_AUTFORM_HANDLERSV2_ERR_NORIGHT2"] = "Нет правил для отправки кодов на Телефон.";
+$MESS["AWZ_AUTFORM_HANDLERSV2_SEND_CODE"] = 'Код подтверждения отправлен. Введите код в поле ниже.';
+$MESS["AWZ_AUTFORM_HANDLERSV2_SEND_CODE_EMAIL"] = 'Код подтверждения отправлен на Ваш Email адрес. Введите его в поле ниже.';
+$MESS["AWZ_AUTFORM_HANDLERSV2_SEND_CODE_BTN"] = 'Подтвердить телефон';
+$MESS["AWZ_AUTFORM_HANDLERSV2_SEND_CODE_BTN_EMAIL"] = 'Подтвердить Email';
+$MESS["AWZ_AUTFORM_HANDLERSV2_PHONE_ERR"] = 'Неверный формат номера телефона';
+$MESS["AWZ_AUTFORM_HANDLERSV2_RULE_MS"] = "Отправить код в смс через mlife.smsservices";
+$MESS["AWZ_AUTFORM_HANDLERSV2_RULE_MS_SITE"] = "Только для сайта";
+$MESS["AWZ_AUTFORM_HANDLERSV2_RULE_MS_TMPL"] = "Шаблон";
+$MESS["AWZ_AUTFORM_HANDLERSV2_RULE_MS_TIMEOUT"] = "Таймаут следующего кода";
+$MESS["AWZ_AUTFORM_HANDLERSV2_RULE_MS_SEC"] = "секунд";
+$MESS["AWZ_AUTFORM_HANDLERSV2_RULE_MS_REPEAT"] = "Повторить правило";
+$MESS["AWZ_AUTFORM_HANDLERSV2_RULE_MS_RAZ"] = "раз";
+$MESS["AWZ_AUTFORM_HANDLERSV2_RULE_MS_KOD"] = "Код правила";
+$MESS["AWZ_AUTFORM_HANDLERSV2_RULE_MS_SITE_ALL"] = "Все сайты";

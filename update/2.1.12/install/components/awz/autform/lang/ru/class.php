@@ -1,0 +1,24 @@
+<?php
+$MESS['AWZ_AUTFORM_MODULE_NOT_INSTALL'] = 'Модуль AWZ: Форма авторизации не установлен.';
+$MESS['AWZ_AUTFORM_MODULE_NOT_EVENT'] = 'Обработчик #EVENT_NAME# модуля awz.autform не выполнился.';
+$MESS['AWZ_AUTFORM_CMP_NOT_REGISTER'] = 'Регистрация пользователей отключена.';
+$MESS['AWZ_AUTFORM_CMP_NOT_REGISTER_ADM'] = 'Не зарегистрироваться в группу администраторов.';
+$MESS['AWZ_AUTFORM_MODULE_USER_NOT_FOUND'] = 'Пользователь не найден.';
+$MESS['AWZ_AUTFORM_MODULE_USER_REGISTER_FOUND'] = 'Пользователь уже зарегистрирован на данный номер телефона. Воспользуйтесь формой входа на сайт.';
+$MESS['AWZ_AUTFORM_MODULE_NOT_PHONE'] = 'Не указан номер телефона.';
+$MESS['AWZ_AUTFORM_MODULE_NOT_PHONE_LOGIN'] = 'Не указан логин или номер телефона.';
+$MESS['AWZ_AUTFORM_MODULE_NOT_SMSCODE'] = 'Не указан код подтверждения.';
+$MESS['AWZ_AUTFORM_MODULE_ERR_PASSW'] = 'Неверный пароль.';
+$MESS['AWZ_AUTFORM_CODE_NOT_EXPIRED'] = 'Код уже отправлен, следующая попытка отправки кода не раньше #DATE#.';
+$MESS['AWZ_AUTFORM_CODE_NOT_EXPIRED_CALL'] = 'Следующая попытка запроса звонка не раньше #DATE#.';
+$MESS['AWZ_AUTFORM_TOKEN_EXPIRED'] = 'Csrf токен просрочен, обновите страницу и попробуйте еще раз.';
+$MESS['AWZ_AUTFORM_CODE_NOT_FOUND'] = 'Код не был сгенерирован для вашего номера телефона или просрочен. Получите новый код.';
+$MESS['AWZ_AUTFORM_CODE_NOT_FOUND_CALL'] = 'Звонок не был совершен для вашего номера телефона или просрочен. Запросите новый звонок.';
+$MESS['AWZ_AUTFORM_CODE_MAX_CHECK_LIMIT'] = 'Превышен лимит попыток на проверку кода.';
+$MESS['AWZ_AUTFORM_MODULE_CODE_ERR'] = 'Неверный код.';
+$MESS['AWZ_AUTFORM_MODULE_ERR_GROUP_LOGIN'] = 'Авторизация запрещена для данной группы пользователей.';
+$MESS['AWZ_AUTFORM_MODULE_ERR_GROUP_LOGIN_SMS'] = 'Авторизация по смс запрещена для данной группы пользователей.';
+$MESS['AWZ_AUTFORM_CMP_NOT_AGREMENT'] = 'Соглашение об обработке персональных данных не найдено.';
+$MESS['AWZ_AUTFORM_CMP_NOT_CHECK_AGREEMENT'] = 'Соглашение об обработке персональных данных не принято.';
+$MESS['AWZ_AUTFORM_CMP_NOT_SETTINGS'] = 'Компонент "AWZ: Форма авторизации" не настроен.';
+$MESS['AWZ_AUTFORM_MODULE_NOT_LOGIN'] = 'Пользователь по данному логину не найден.';

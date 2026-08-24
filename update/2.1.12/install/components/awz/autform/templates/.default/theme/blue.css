@@ -1,0 +1,51 @@
+.awz-autform-theme-blue .awz-autform-modal-content-wrap {
+    background:#ffffff;
+}
+.awz-autform-form-links {border-bottom:2px solid #2C5DA7;margin-bottom:10px;}
+.awz-autform-theme-blue .awz-autform-form-links a {background:#ededed;color:#000000;}
+.awz-autform-theme-blue .awz-autform-form-links a:hover,
+.awz-autform-theme-blue .awz-autform-form-links a.active {background: #2C5DA7; color:#ffffff;}
+.awz-autform-theme-blue .awz-autform-link-block {
+    border:1px solid #2C5DA7;
+}
+.awz-autform-theme-blue .awz-autform-modal-content-bg {
+    background:#000000;opacity:0.85;
+}
+.awz-autform-theme-blue .awz-autform-close .awz-autform-close-leftright {
+    background-color: #ffffff;
+}
+.awz-autform-theme-blue .awz-autform-close .awz-autform-close-rightleft {
+    background-color: #ffffff;
+}
+.awz-autform-theme-blue .awz-autform-close .awz-autform-close-close-btn {
+    color: #ffffff;
+}
+.awz-autform-theme-blue .awz-autform-close div:hover .awz-autform-close-leftright {
+    background-color: #ffffff;
+}
+.awz-autform-theme-blue .awz-autform-close div:hover .awz-autform-close-rightleft {
+    background-color: #ffffff;
+}
+.awz-autform-theme-blue .awz-autform-modal-header {
+    background:#2C5DA7;color:#ffffff;
+}
+.awz-autform-theme-blue .awz-autform-modal-error {
+    color:#2C5DA7;
+}
+.awz-autform-theme-blue .awz-autform-preload {
+    background:#ffffff;opacity:0.85;
+}
+.awz-autform-theme-blue .awz-autform-load {
+    color:#2C5DA7;
+}
+.awz-autform-theme-blue .awz-autform-close-mobile {
+    background:#2C5DA7;
+}
+.awz-autform-theme-blue .awz-autform-error-row {
+    color:red;
+}
+.awz-autform-theme-blue .awz-autform-message-row {
+    color:green;
+}
+.awz-autform-theme-blue .awz-autform-form-buttons button {color:#ffffff;background:#0064c9;}
+.awz-autform-theme-blue .awz-autform-form-buttons button:hover {color:#ffffff;background: #2C5DA7;}

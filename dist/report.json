@@ -1,0 +1,66 @@
+{
+  "success": true,
+  "requestId": "awz.autform-1756024320",
+  "data": {
+    "vulnerabilities": [
+      {
+        "file": "lib/handlersv2.php",
+        "line": "340-365",
+        "type": "SSRF",
+        "severity": "high",
+        "description": "Подтверждена SSRF (Server-Side Request Forgery). В методе sendCodeAction строка 341 URL для HTTP-запроса берётся напрямую из конфигурации правила ($rule['url']) без какой-либо валидации. Атакующий, имеющий возможность изменить конфигурацию модуля (например, через административную панель), может указать произвольный URL, включая внутренние сетевые ресурсы (localhost, internal APIs, metadata services). Строка 358 создаёт новый экземпляр HttpClient, строка 361-365 выполняет POST или GET запрос к указанному URL с подставленными параметрами. Это позволяет сканировать внутреннюю сеть, обращаться к metadata service облачных провайдеров (169.254.169.254), и т.д.",
+        "recommendation": "Добавить валидацию URL перед отправкой запроса. Запретить протоколы кроме http/https. Проверять, что хост не является внутренним IP-адресом. Использовать allowlist доменов если адресация известна заранее.",
+        "fix": "Before:\n$url = $rule['url'];\n$httpClient = new \\Bitrix\\Main\\Web\\HttpClient();\nif($method == \\Bitrix\\Main\\Web\\HttpClient::HTTP_POST) {\n    $response = $httpClient->post($url, $params);\n} else {\n    $response = $httpClient->get($urlWithParams);\n}\n\nAfter:\nuse Bitrix\\Main\\Engine\\Filter\\Authentication;\n\n// Валидация URL\n$parsedUrl = parse_url($rule['url']);\nif (!$parsedUrl || !isset($parsedUrl['host'])) {\n    throw new \\Exception('Invalid URL');\n}\n\n// Запрет внутренних адресов\n$host = $parsedUrl['host'];\nif (preg_match('/^(127\\.\\.|10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.|localhost|\\[::1\\])/i', $host)) {\n    throw new \\Exception('Internal host blocked');\n}\n\n// Разрешены только http/https\nif (!in_array($parsedUrl['scheme'] ?? '', ['http', 'https'], true)) {\n    throw new \\Exception('Only HTTP/HTTPS allowed');\n}\n\n$httpClient = new \\Bitrix\\Main\\Web\\HttpClient();"
+      },
+      {
+        "file": "lib/handlersv2.php",
+        "line": "341",
+        "type": "Command Injection",
+        "severity": "medium",
+        "description": "Подозрение: URL и параметры HTTP-запроса передаются в HttpClient без достаточной валидации. Если атакующий может контролировать содержимое $rule['url'] или $rule['params'] (через базу данных или файлы конфигурации), он может попытаться внедрить вредоносные данные в HTTP-запрос. Параметры заменяются str_replace (строка 353) без санитизации плейсхолдеров.",
+        "recommendation": "Валидировать и экранировать все входные данные перед использованием в HTTP-запросах. Проверять структуру $rule['params'] и тип значений.",
+        "fix": "Before:\nforeach($params as $key => $value) {\n    if(is_string($value)) {\n        $value = str_replace(['#CODE#', '#EMAIL#', '#PHONE#'], [$code, $email, $phone], $value);\n        $params[$key] = $value;\n    }\n}\n\nAfter:\nforeach($params as $key => $value) {\n    if(is_string($value)) {\n        // Валидация типа значения\n        $value = mb_substr($value, 0, 2048, 'UTF-8');\n        $value = str_replace(['#CODE#', '#EMAIL#', '#PHONE#'], [$code, $email, $phone], $value);\n        $params[$key] = $value;\n    }\n}"
+      },
+      {
+        "file": "options.php",
+        "line": "333,349",
+        "type": "Information Disclosure",
+        "severity": "low",
+        "description": "Подозрение: Данные из $_REQUEST (строки 333, 349 - email и sms правила) обрабатываются без строгой валидации формата. Хотя check_bitrix_sessid() вызывается (строка 330), сами значения email/sms правил не проходят санитизацию перед сохранением в Option. Это может привести к хранению некорректных данных в конфигурации модуля.",
+        "recommendation": "Добавить валидацию формата email и санитизацию SMS-правил перед сохранением в опции модуля.",
+        "fix": "Before:\n$rule1 = $_REQUEST['email'];\n$rule1 = $_REQUEST['sms'];\n\nAfter:\n$rule1 = $_REQUEST['email'];\nif (is_array($rule1)) {\n    foreach ($rule1 as &$item) {\n        $item = json_decode($item, true);\n        if (json_last_error() !== JSON_ERROR_NONE) {\n            unset($item);\n            break;\n        }\n    }\n}\n\n$rule1 = $_REQUEST['sms'];"
+      },
+      {
+        "file": "lib/handlesms/aut.php",
+        "line": "62-63",
+        "type": "Information Disclosure",
+        "severity": "low",
+        "description": "Подозрение: В функции tmplHtmlSave строки 62-63 данные из $_REQUEST ('PARAMS_PHONE' и 'PARAMS_APPSMS') используются напрямую для формирования PARAMS без санитизации. Телефонный номер не форматируется и не проверяется на допустимые символы перед сериализацией и сохранением.",
+        "recommendation": "Добавить санитизацию PHONE: удалить все символы кроме цифр и плюса. Для APPSMS использовать строгую проверку на 'Y'/'N'.",
+        "fix": "Before:\n$PARAMS = array(\n    \"PHONE\"=>trim($_REQUEST['PARAMS_PHONE']),\n    \"APPSMS\"=>trim($_REQUEST['PARAMS_APPSMS'])\n);\n\nAfter:\n$PARAMS = array(\n    \"PHONE\"=>'+'.preg_replace('/([^0-9])/','',trim($_REQUEST['PARAMS_PHONE'])),\n    \"APPSMS\"=>(trim($_REQUEST['PARAMS_APPSMS'])==='Y')?'Y':'N'\n);"
+      },
+      {
+        "file": "lib/handlersv2.php\nlib/handlesms/aut.php\nlib/codes.php\nlib/log.php",
+        "line": "235,32,78,68",
+        "type": "Insecure Deserialization",
+        "severity": "low",
+        "description": "Подтверждена небезопасная десериализация в нескольких файлах. Во всех случаях используется unserialize() с опцией ['allowed_classes' => false], что снижает риск удалённого выполнения кода, но не исключает полностью риски, связанные с garbage collection атаками и DoS. Данные PARAMS могут быть загружены из базы данных и содержать вредоносные объекты.",
+        "recommendation": "Заменить serialize/unserialize на JSON encode/decode везде, где это возможно. Если необходимо использовать unserialize — всегда проверять источник данных и использовать allowed_classes => false.",
+        "fix": "Before:\n$tmp = unserialize($arData['PARAMS'], [\"allowed_classes\" => false]);\n\nAfter:\ntry {\n    $tmp = \\Bitrix\\Main\\Web\\Json::decode($arData['PARAMS']);\n} catch (\\Exception $e) {\n    $tmp = [];\n}"
+      }
+    ],
+    "summary": "Обнаружено 5 уязвимостей в 4 файлах при анализе 53 файлов модуля. Максимальная severity: high.",
+    "scannedFiles": 53,
+    "riskLevel": "high",
+    "auditedFiles": [
+      "options.php",
+      "install/components/awz/autform/class.php",
+      "install/components/awz/autform2/class.php",
+      "lib/handlersv2.php",
+      "lib/handlesms/aut.php",
+      "lib/helper.php",
+      "lib/codes.php",
+      "lib/log.php"
+    ]
+  }
+}
