@@ -537,7 +537,7 @@ $tabControl->BeginNextTab();
                             var cn_rule = 0;
                             $('#condRulesEmail .condition-wrapper .condition-container').each(function(){
                                 cn_rule+=1;
-                                $(this).append('<a class="up" href="<?echo $APPLICATION->GetCurPage()?>?mid=<?=htmlspecialcharsbx($module_id)?>&lang=<?=LANGUAGE_ID?>&mid_menu=1&type=condRulesEmail&down=">ниже</a>');
+                                $(this).append('<a class="up" href="<?echo $APPLICATION->GetCurPage()?>?mid=<?=htmlspecialcharsbx($module_id)?>&lang=<?=LANGUAGE_ID?>&mid_menu=1&type=condRulesEmail&<?=bitrix_sessid_get()?>&down=">ниже</a>');
                                 $(this).find('a.up').attr('href', $(this).find('a.up').attr('href')+$(this).attr('id'))
                                 $(this).append('<span class="num">'+cn_rule+'</span>');
                             });
@@ -651,7 +651,7 @@ $tabControl->BeginNextTab();
                             var cn_rule = 0;
                             $('#condRulesSms .condition-wrapper .condition-container').each(function(){
                                 cn_rule+=1;
-                                $(this).append('<a class="up" href="<?echo $APPLICATION->GetCurPage()?>?mid=<?=htmlspecialcharsbx($module_id)?>&lang=<?=LANGUAGE_ID?>&mid_menu=1&type=condRulesSms&down=">ниже</a>');
+                                $(this).append('<a class="up" href="<?echo $APPLICATION->GetCurPage()?>?mid=<?=htmlspecialcharsbx($module_id)?>&lang=<?=LANGUAGE_ID?>&mid_menu=1&type=condRulesSms&<?=bitrix_sessid_get()?>&down=">ниже</a>');
                                 $(this).find('a.up').attr('href', $(this).find('a.up').attr('href')+$(this).attr('id'))
                                 $(this).append('<span class="num">'+cn_rule+'</span>');
                             });
